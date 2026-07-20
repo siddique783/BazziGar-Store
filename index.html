@@ -1,0 +1,3301 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bazigar Store - Premium App Downloads</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+    
+    /* অ্যাডমিন গিয়ার বাটন হাইড */
+    #adminGearBtn {
+        display: none !important;
+    }
+
+    /* ============================================================
+       CSS VARIABLES (Light & Dark Mode)
+       ============================================================ */
+    :root {
+        --bg: #f8f9fa;
+        --card-bg: #ffffff;
+        --text: #1a1a1a;
+        --text-muted: #5f6368;
+        --border: #e8eaed;
+        --shadow: 0 4px 24px rgba(0, 0, 0, 0.06);
+        --shadow-hover: 0 8px 40px rgba(0, 0, 0, 0.08);
+        --input-bg: #fafbfc;
+        --primary: #1a73e8;
+        --primary-hover: #1557b0;
+        --success: #34A853;
+        --danger: #EA4335;
+        --warning: #FBBC04;
+        --tag-bg: #e8f0fe;
+        --tag-text: #1a73e8;
+        --badge-bg: #e8f5e9;
+        --badge-text: #2e7d32;
+        --rules-bg: #fff8e1;
+        --rules-text: #e65100;
+        --admin-bg: #f8f9fa;
+        --footer-bg: #f1f3f4;
+        --transition: 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    [data-theme="dark"] {
+        --bg: #0d0d1a;
+        --card-bg: #1a1a2e;
+        --text: #ffffff;
+        --text-muted: #a0a0c0;
+        --border: #2a2a4a;
+        --shadow: 0 4px 24px rgba(0, 0, 0, 0.3);
+        --shadow-hover: 0 8px 40px rgba(0, 0, 0, 0.4);
+        --input-bg: #252540;
+        --primary: #6C63FF;
+        --primary-hover: #5A52D5;
+        --tag-bg: #2a2a4a;
+        --tag-text: #6C63FF;
+        --badge-bg: #1a3a2a;
+        --badge-text: #34A853;
+        --rules-bg: #2a1a0a;
+        --rules-text: #FFB300;
+        --admin-bg: #1a1a2e;
+        --footer-bg: #14142b;
+    }
+
+    /* ============================================================
+       RESET & BASE
+       ============================================================ */
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    body {
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+        background: var(--bg);
+        color: var(--text);
+        min-height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 24px;
+        transition: background var(--transition), color var(--transition);
+    }
+
+    /* ============================================================
+       SMOOTH SCROLL
+       ============================================================ */
+    html {
+        scroll-behavior: smooth;
+    }
+
+    /* ============================================================
+       PAGE CONTAINER
+       ============================================================ */
+    .page {
+        display: none;
+        width: 100%;
+        max-width: 560px;
+        animation: fadeUp 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .page.active {
+        display: block;
+    }
+
+    @keyframes fadeUp {
+        from { opacity: 0; transform: translateY(30px) scale(0.96); }
+        to { opacity: 1; transform: translateY(0) scale(1); }
+    }
+
+    /* ============================================================
+       CARD
+       ============================================================ */
+    .card {
+        background: var(--card-bg);
+        border-radius: 28px;
+        padding: 28px 24px 32px;
+        box-shadow: var(--shadow);
+        border: 1px solid var(--border);
+        transition: background var(--transition), box-shadow var(--transition), border var(--transition);
+    }
+
+    .card:hover {
+        box-shadow: var(--shadow-hover);
+    }
+
+    /* ============================================================
+       HEADER
+       ============================================================ */
+    .google-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding-bottom: 20px;
+        border-bottom: 1px solid var(--border);
+        margin-bottom: 24px;
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+
+    .google-logo {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        text-decoration: none;
+        cursor: pointer;
+        user-select: none;
+    }
+
+    .google-logo .g {
+        font-size: 28px;
+        font-weight: 700;
+        letter-spacing: -1px;
+    }
+    .google-logo .g span:nth-child(1) { color: #4285F4; }
+    .google-logo .g span:nth-child(2) { color: #EA4335; }
+    .google-logo .g span:nth-child(3) { color: #FBBC04; }
+    .google-logo .g span:nth-child(4) { color: #4285F4; }
+    .google-logo .g span:nth-child(5) { color: #34A853; }
+    .google-logo .g span:nth-child(6) { color: #EA4335; }
+
+    .google-logo .text {
+        font-size: 16px;
+        font-weight: 500;
+        color: var(--text-muted);
+        letter-spacing: -0.3px;
+        transition: color var(--transition);
+    }
+    .google-logo .text strong {
+        color: var(--text);
+        font-weight: 600;
+        transition: color var(--transition);
+    }
+
+    /* ============================================================
+       HEADER ACTIONS
+       ============================================================ */
+    .header-actions {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .header-actions button {
+        background: none;
+        border: none;
+        font-size: 20px;
+        cursor: pointer;
+        padding: 6px;
+        border-radius: 50%;
+        transition: background 0.3s ease;
+        color: var(--text);
+    }
+
+    .header-actions button:hover {
+        background: var(--border);
+    }
+
+    .lang-toggle-google {
+        padding: 6px 14px;
+        border-radius: 20px;
+        border: 1px solid var(--border);
+        background: transparent;
+        color: var(--text);
+        font-size: 13px;
+        font-weight: 500;
+        font-family: 'Inter', sans-serif;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+
+    .lang-toggle-google:hover {
+        background: var(--border);
+    }
+
+    /* ============================================================
+       BADGE
+       ============================================================ */
+    .google-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        background: var(--tag-bg);
+        color: var(--tag-text);
+        padding: 4px 12px;
+        border-radius: 16px;
+        font-size: 11px;
+        font-weight: 600;
+        letter-spacing: 0.3px;
+        text-transform: uppercase;
+        margin-bottom: 12px;
+        transition: background var(--transition), color var(--transition);
+    }
+
+    .google-badge .dot {
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background: var(--success);
+        animation: pulse-dot 2s infinite;
+    }
+
+    @keyframes pulse-dot {
+        0%, 100% { opacity: 1; transform: scale(1); }
+        50% { opacity: 0.5; transform: scale(0.8); }
+    }
+
+    /* ============================================================
+       CARD HEADER
+       ============================================================ */
+    .card-header {
+        text-align: left;
+        margin-bottom: 24px;
+    }
+
+    .card-header .sub {
+        font-size: 13px;
+        color: var(--text-muted);
+        font-weight: 500;
+        letter-spacing: 0.5px;
+        text-transform: uppercase;
+        margin-bottom: 4px;
+        transition: color var(--transition);
+    }
+
+    .card-header h1 {
+        font-size: 26px;
+        font-weight: 700;
+        color: var(--text);
+        letter-spacing: -0.5px;
+        line-height: 1.2;
+        transition: color var(--transition);
+    }
+
+    .card-header h1 .highlight {
+        background: linear-gradient(135deg, #4285F4, #34A853);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+    }
+
+    .card-header p {
+        color: var(--text-muted);
+        font-size: 14px;
+        margin-top: 6px;
+        line-height: 1.5;
+        transition: color var(--transition);
+    }
+
+    /* ============================================================
+       FEATURES LIST
+       ============================================================ */
+    .features-list {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin: 16px 0 20px;
+        padding: 0;
+        list-style: none;
+    }
+
+    .features-list li {
+        font-size: 12px;
+        color: var(--text);
+        background: var(--border);
+        padding: 4px 12px;
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        font-weight: 500;
+        transition: background var(--transition), color var(--transition);
+    }
+
+    .features-list li .check {
+        color: var(--success);
+        font-weight: 700;
+    }
+
+    /* ============================================================
+       DARAZ-STYLE PRODUCT GRID
+       ============================================================ */
+    .product-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
+        margin-bottom: 24px;
+    }
+
+    /* ============================================================
+       DARAZ-STYLE PRODUCT CARD
+       ============================================================ */
+    .product-item {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: flex-start;
+        padding: 12px 10px 14px;
+        background: var(--card-bg);
+        border-radius: 12px;
+        border: 1.5px solid var(--border);
+        cursor: default;
+        transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        position: relative;
+        min-height: 230px;
+        height: 100%;
+        text-align: center;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+    }
+
+    .product-item:hover {
+        border-color: var(--primary);
+        transform: translateY(-3px);
+        box-shadow: 0 6px 24px rgba(26, 115, 232, 0.12);
+    }
+
+    /* ----- ইমেজ/আইকন (উপরে) ----- */
+    .product-item .icon-box {
+        width: 72px;
+        height: 72px;
+        border-radius: 12px;
+        background: linear-gradient(135deg, #e8f0fe, #d2e3fc);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 34px;
+        flex-shrink: 0;
+        margin-bottom: 8px;
+        transition: all 0.3s ease;
+        overflow: hidden;
+    }
+
+    .product-item:hover .icon-box {
+        transform: scale(1.05);
+    }
+
+    .product-item .icon-box img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        border-radius: 12px;
+    }
+
+    /* ----- নাম ----- */
+    .product-item .info {
+        flex: 1;
+        width: 100%;
+        min-width: 0;
+    }
+
+    .product-item .info .name {
+        font-weight: 600;
+        color: var(--text);
+        font-size: 13px;
+        letter-spacing: -0.2px;
+        line-height: 1.3;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        transition: color var(--transition);
+    }
+
+    /* ----- ফিচার ট্যাগ ----- */
+    .product-item .info .feature-tags {
+        display: flex;
+        gap: 4px;
+        margin-top: 4px;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    .product-item .info .feature-tags span {
+        font-size: 8px;
+        background: var(--border);
+        color: var(--text-muted);
+        padding: 1px 8px;
+        border-radius: 10px;
+        font-weight: 500;
+        letter-spacing: 0.2px;
+        transition: background var(--transition), color var(--transition);
+    }
+
+    /* ----- দাম (নিচে) ----- */
+    .product-item .price-section {
+        text-align: center;
+        flex-shrink: 0;
+        margin-top: 6px;
+        width: 100%;
+    }
+
+    .product-item .price-section .original {
+        font-size: 11px;
+        color: #9aa0a6;
+        text-decoration: line-through;
+        display: block;
+        font-weight: 400;
+    }
+
+    .product-item .price-section .current {
+        font-size: 18px;
+        font-weight: 700;
+        color: var(--primary);
+        display: block;
+        line-height: 1.2;
+        transition: color var(--transition);
+    }
+
+    .product-item .price-section .discount-badge {
+        display: inline-block;
+        background: var(--badge-bg);
+        color: var(--badge-text);
+        font-size: 9px;
+        font-weight: 700;
+        padding: 1px 8px;
+        border-radius: 12px;
+        margin-top: 2px;
+        letter-spacing: 0.3px;
+        transition: background var(--transition), color var(--transition);
+    }
+
+    /* ----- ট্যাগ (উপরের ডান কোণায়) ----- */
+    .product-item .tag {
+        position: absolute;
+        top: -4px;
+        right: -4px;
+        background: var(--success);
+        color: white;
+        font-size: 8px;
+        font-weight: 700;
+        text-transform: uppercase;
+        padding: 2px 10px;
+        border-radius: 10px;
+        letter-spacing: 0.3px;
+        box-shadow: 0 2px 8px rgba(52, 168, 83, 0.25);
+        z-index: 2;
+    }
+
+    .product-item .tag.popular {
+        background: var(--warning);
+        color: #1a1a1a;
+        box-shadow: 0 2px 8px rgba(251, 188, 4, 0.25);
+    }
+
+    .product-item .tag.limited {
+        background: var(--danger);
+        box-shadow: 0 2px 8px rgba(234, 67, 53, 0.25);
+    }
+
+    /* ============================================================
+       ACTION BUTTONS (কার্ডের নিচে)
+       ============================================================ */
+    .product-item .action-buttons {
+        display: flex;
+        gap: 8px;
+        margin-top: 10px;
+        width: 100%;
+        justify-content: center;
+    }
+
+    .product-item .action-buttons .btn-action {
+        padding: 5px 14px;
+        border: none;
+        border-radius: 20px;
+        font-size: 11px;
+        font-weight: 600;
+        font-family: 'Inter', sans-serif;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        display: flex;
+        align-items: center;
+        gap: 4px;
+    }
+
+    .product-item .action-buttons .btn-buy {
+        background: var(--primary);
+        color: white;
+        box-shadow: 0 2px 8px rgba(26, 115, 232, 0.25);
+    }
+
+    .product-item .action-buttons .btn-buy:hover {
+        background: var(--primary-hover);
+        transform: scale(1.03);
+    }
+
+    .product-item .action-buttons .btn-view {
+        background: var(--border);
+        color: var(--text);
+    }
+
+    .product-item .action-buttons .btn-view:hover {
+        background: var(--input-bg);
+        transform: scale(1.03);
+    }
+
+    .product-item .action-buttons .btn-view.active {
+        background: var(--tag-bg);
+        color: var(--tag-text);
+    }
+
+    /* ============================================================
+       DETAILS POPUP (View বাটনে ক্লিক করলে)
+       ============================================================ */
+    .product-detail-popup {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.5);
+        backdrop-filter: blur(4px);
+        z-index: 3000;
+        justify-content: center;
+        align-items: center;
+        padding: 20px;
+        animation: fadeIn 0.3s ease;
+    }
+
+    .product-detail-popup.show {
+        display: flex;
+    }
+
+    @keyframes fadeIn {
+        from { opacity: 0; transform: scale(0.95); }
+        to { opacity: 1; transform: scale(1); }
+    }
+
+    .product-detail-popup .popup-content {
+        background: var(--card-bg);
+        border-radius: 24px;
+        max-width: 420px;
+        width: 100%;
+        padding: 28px 24px 24px;
+        box-shadow: 0 24px 80px rgba(0,0,0,0.3);
+        border: 1px solid var(--border);
+        position: relative;
+        max-height: 90vh;
+        overflow-y: auto;
+    }
+
+    .product-detail-popup .popup-close {
+        position: absolute;
+        top: 12px;
+        right: 16px;
+        background: none;
+        border: none;
+        font-size: 24px;
+        cursor: pointer;
+        color: var(--text-muted);
+        transition: 0.3s ease;
+        font-family: 'Inter', sans-serif;
+    }
+
+    .product-detail-popup .popup-close:hover {
+        color: var(--danger);
+        transform: rotate(90deg);
+    }
+
+    .product-detail-popup .popup-icon {
+        font-size: 64px;
+        text-align: center;
+        display: block;
+        margin-bottom: 12px;
+    }
+
+    .product-detail-popup .popup-icon img {
+        width: 80px;
+        height: 80px;
+        object-fit: cover;
+        border-radius: 16px;
+        display: block;
+        margin: 0 auto;
+    }
+
+    .product-detail-popup .popup-name {
+        font-size: 20px;
+        font-weight: 700;
+        color: var(--text);
+        text-align: center;
+        margin-bottom: 4px;
+    }
+
+    .product-detail-popup .popup-desc {
+        font-size: 14px;
+        color: var(--text-muted);
+        text-align: center;
+        margin-bottom: 12px;
+    }
+
+    .product-detail-popup .popup-price {
+        text-align: center;
+        margin-bottom: 16px;
+    }
+
+    .product-detail-popup .popup-price .original {
+        font-size: 14px;
+        color: #9aa0a6;
+        text-decoration: line-through;
+        margin-right: 8px;
+    }
+
+    .product-detail-popup .popup-price .current {
+        font-size: 24px;
+        font-weight: 700;
+        color: var(--primary);
+    }
+
+    .product-detail-popup .popup-features {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+        justify-content: center;
+        margin-bottom: 16px;
+    }
+
+    .product-detail-popup .popup-features span {
+        background: var(--border);
+        padding: 4px 12px;
+        border-radius: 12px;
+        font-size: 12px;
+        color: var(--text);
+        font-weight: 500;
+    }
+
+    .product-detail-popup .popup-tag {
+        display: inline-block;
+        background: var(--badge-bg);
+        color: var(--badge-text);
+        padding: 4px 14px;
+        border-radius: 12px;
+        font-size: 12px;
+        font-weight: 600;
+        margin-bottom: 12px;
+    }
+
+    .product-detail-popup .popup-buy-btn {
+        width: 100%;
+        padding: 12px;
+        background: var(--primary);
+        color: white;
+        border: none;
+        border-radius: 16px;
+        font-size: 16px;
+        font-weight: 600;
+        font-family: 'Inter', sans-serif;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+
+    .product-detail-popup .popup-buy-btn:hover {
+        background: var(--primary-hover);
+        transform: scale(1.02);
+    }
+
+    /* ============================================================
+       FORM
+       ============================================================ */
+    .form-group {
+        margin-bottom: 16px;
+    }
+
+    .form-group label {
+        display: block;
+        font-size: 13px;
+        font-weight: 600;
+        color: var(--text);
+        margin-bottom: 6px;
+        transition: color var(--transition);
+    }
+
+    .form-group label .required {
+        color: var(--danger);
+        margin-left: 2px;
+    }
+
+    .form-group label .hint {
+        font-weight: 400;
+        color: var(--text-muted);
+        font-size: 12px;
+        transition: color var(--transition);
+    }
+
+    .form-group input {
+        width: 100%;
+        padding: 12px 16px;
+        border: 1.5px solid var(--border);
+        border-radius: 12px;
+        font-size: 14px;
+        font-family: 'Inter', sans-serif;
+        background: var(--input-bg);
+        color: var(--text);
+        transition: all 0.3s ease;
+        outline: none;
+    }
+
+    .form-group input:focus {
+        border-color: var(--primary);
+        background: var(--card-bg);
+        box-shadow: 0 0 0 4px rgba(26, 115, 232, 0.08);
+    }
+
+    .form-group input::placeholder {
+        color: #9aa0a6;
+    }
+
+    /* ============================================================
+       PRICE DISPLAY
+       ============================================================ */
+    .price-display {
+        background: var(--border);
+        border-radius: 16px;
+        padding: 16px 20px;
+        text-align: center;
+        margin: 16px 0 20px;
+        border: 1.5px dashed var(--border);
+        transition: background var(--transition), border var(--transition);
+    }
+
+    .price-display .label {
+        font-size: 13px;
+        color: var(--text-muted);
+        font-weight: 500;
+        transition: color var(--transition);
+    }
+
+    .price-display .amount {
+        font-size: 32px;
+        font-weight: 700;
+        color: var(--primary);
+        margin-top: 2px;
+        letter-spacing: -0.5px;
+        transition: color var(--transition);
+    }
+
+    .price-display .saved {
+        font-size: 13px;
+        color: var(--success);
+        font-weight: 600;
+        margin-top: 2px;
+        transition: color var(--transition);
+    }
+
+    /* ============================================================
+       BUTTONS
+       ============================================================ */
+    .btn-google {
+        width: 100%;
+        padding: 14px 24px;
+        background: var(--primary);
+        color: white;
+        border: none;
+        border-radius: 24px;
+        font-size: 16px;
+        font-weight: 600;
+        font-family: 'Inter', sans-serif;
+        cursor: pointer;
+        transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        box-shadow: 0 2px 12px rgba(26, 115, 232, 0.3);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        letter-spacing: 0.2px;
+    }
+
+    .btn-google:hover {
+        background: var(--primary-hover);
+        transform: translateY(-2px);
+        box-shadow: 0 4px 20px rgba(26, 115, 232, 0.35);
+    }
+
+    .btn-google:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+        transform: none;
+        box-shadow: none;
+    }
+
+    .btn-google.success {
+        background: var(--success);
+        box-shadow: 0 2px 12px rgba(52, 168, 83, 0.3);
+    }
+
+    .btn-google.success:hover {
+        background: #2d9249;
+        box-shadow: 0 4px 20px rgba(52, 168, 83, 0.35);
+    }
+
+    .btn-google.outline {
+        background: transparent;
+        color: var(--primary);
+        border: 1.5px solid var(--primary);
+        box-shadow: none;
+    }
+
+    .btn-google.outline:hover {
+        background: var(--border);
+        transform: none;
+        box-shadow: none;
+    }
+
+    .btn-google .arrow {
+        transition: transform 0.3s ease;
+    }
+
+    .btn-google:hover .arrow {
+        transform: translateX(4px);
+    }
+
+    /* ============================================================
+       BACK BUTTON
+       ============================================================ */
+    .back-btn-google {
+        background: none;
+        border: none;
+        color: var(--text-muted);
+        font-size: 14px;
+        font-weight: 500;
+        font-family: 'Inter', sans-serif;
+        cursor: pointer;
+        padding: 8px 0;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        transition: 0.3s ease;
+        margin-bottom: 16px;
+    }
+
+    .back-btn-google:hover {
+        color: var(--text);
+    }
+
+    /* ============================================================
+       PAYMENT CARD
+       ============================================================ */
+    .payment-card {
+        background: var(--input-bg);
+        border-radius: 16px;
+        padding: 16px 20px;
+        margin-bottom: 20px;
+        border: 1px solid var(--border);
+        transition: background var(--transition), border var(--transition);
+    }
+
+    .payment-card .row {
+        display: flex;
+        justify-content: space-between;
+        padding: 8px 0;
+        border-bottom: 1px solid var(--border);
+        font-size: 14px;
+        transition: border var(--transition);
+    }
+
+    .payment-card .row:last-child {
+        border-bottom: none;
+    }
+
+    .payment-card .label {
+        color: var(--text-muted);
+        font-weight: 500;
+        transition: color var(--transition);
+    }
+
+    .payment-card .value {
+        font-weight: 600;
+        color: var(--text);
+        transition: color var(--transition);
+    }
+
+    .payment-card .value.amount {
+        color: var(--primary);
+        font-size: 18px;
+        transition: color var(--transition);
+    }
+
+    /* ============================================================
+       BKASH BOX
+       ============================================================ */
+    .bkash-box {
+        background: var(--badge-bg);
+        border-radius: 16px;
+        padding: 16px 20px;
+        text-align: center;
+        margin-bottom: 20px;
+        border: 2px dashed var(--success);
+        transition: background var(--transition), border var(--transition);
+    }
+
+    .bkash-box .label {
+        font-size: 13px;
+        color: var(--badge-text);
+        font-weight: 500;
+        transition: color var(--transition);
+    }
+
+    .bkash-box .number {
+        font-size: 24px;
+        font-weight: 700;
+        color: var(--text);
+        margin-top: 4px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 12px;
+        transition: color var(--transition);
+    }
+
+    .bkash-box .number .copy-btn {
+        background: none;
+        border: none;
+        font-size: 18px;
+        cursor: pointer;
+        color: var(--badge-text);
+        padding: 4px 8px;
+        border-radius: 8px;
+        transition: 0.3s ease;
+    }
+
+    .bkash-box .number .copy-btn:hover {
+        background: var(--border);
+    }
+
+    /* ============================================================
+       RULES BOX
+       ============================================================ */
+    .rules-box {
+        background: var(--rules-bg);
+        border-radius: 12px;
+        padding: 12px 16px;
+        margin-bottom: 16px;
+        font-size: 12px;
+        color: var(--rules-text);
+        border-left: 4px solid var(--warning);
+        line-height: 1.6;
+        transition: background var(--transition), color var(--transition);
+    }
+
+    .rules-box strong {
+        display: block;
+        margin-bottom: 4px;
+        font-size: 13px;
+    }
+
+    /* ============================================================
+       STATUS
+       ============================================================ */
+    .status-box {
+        margin-top: 16px;
+        padding: 14px 16px;
+        border-radius: 12px;
+        font-size: 14px;
+        display: none;
+        align-items: center;
+        gap: 10px;
+        font-weight: 500;
+    }
+
+    .status-box.show {
+        display: flex;
+    }
+
+    .status-box.success {
+        background: var(--badge-bg);
+        color: var(--badge-text);
+        border: 1px solid var(--success);
+    }
+
+    .status-box.info {
+        background: var(--tag-bg);
+        color: var(--tag-text);
+        border: 1px solid var(--primary);
+    }
+
+    .status-box.error {
+        background: #fce4ec;
+        color: #c62828;
+        border: 1px solid #f8bbd0;
+    }
+
+    /* ============================================================
+       CONFIRMATION
+       ============================================================ */
+    .confirmation-box {
+        text-align: center;
+        padding: 40px 20px 20px;
+    }
+
+    .confirmation-box .icon {
+        font-size: 72px;
+        margin-bottom: 16px;
+        display: block;
+        animation: bounce 1s ease infinite;
+    }
+
+    @keyframes bounce {
+        0%, 100% { transform: scale(1); }
+        50% { transform: scale(1.1); }
+    }
+
+    .confirmation-box h2 {
+        font-size: 24px;
+        color: var(--text);
+        margin-bottom: 8px;
+        font-weight: 700;
+        transition: color var(--transition);
+    }
+
+    .confirmation-box p {
+        color: var(--text-muted);
+        font-size: 14px;
+        line-height: 1.6;
+        transition: color var(--transition);
+    }
+
+    .confirmation-box .link-box {
+        background: var(--input-bg);
+        border-radius: 12px;
+        padding: 16px;
+        margin: 16px 0;
+        word-break: break-all;
+        border: 1px solid var(--border);
+        text-align: left;
+        transition: background var(--transition), border var(--transition);
+    }
+
+    .confirmation-box .link-box strong {
+        display: block;
+        margin-bottom: 6px;
+        color: var(--text);
+        font-size: 13px;
+        transition: color var(--transition);
+    }
+
+    .confirmation-box .link-box a {
+        color: var(--primary);
+        text-decoration: none;
+        font-weight: 500;
+        font-size: 13px;
+        transition: color var(--transition);
+    }
+
+    .confirmation-box .link-box a:hover {
+        text-decoration: underline;
+    }
+
+    /* ============================================================
+       FOOTER
+       ============================================================ */
+    .footer-google {
+        margin-top: 24px;
+        padding-top: 16px;
+        border-top: 1px solid var(--border);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 12px;
+        transition: border var(--transition);
+    }
+
+    .footer-google .order-counter {
+        font-size: 12px;
+        color: var(--text-muted);
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        transition: color var(--transition);
+    }
+
+    .footer-google .order-counter .live-dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: var(--success);
+        animation: pulse-dot 1.5s infinite;
+    }
+
+    .footer-google .footer-actions {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .footer-google .footer-actions button {
+        background: none;
+        border: none;
+        font-size: 18px;
+        cursor: pointer;
+        padding: 6px;
+        border-radius: 50%;
+        transition: background 0.3s ease;
+        color: var(--text-muted);
+    }
+
+    .footer-google .footer-actions button:hover {
+        background: var(--border);
+        color: var(--text);
+    }
+
+    /* ============================================================
+       ADMIN PANEL
+       ============================================================ */
+    .admin-panel-google {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.5);
+        backdrop-filter: blur(4px);
+        z-index: 1000;
+        justify-content: center;
+        align-items: center;
+        padding: 20px;
+    }
+
+    .admin-panel-google.show {
+        display: flex;
+    }
+
+    .admin-box-google {
+        background: var(--card-bg);
+        border-radius: 28px;
+        max-width: 680px;
+        width: 100%;
+        max-height: 90vh;
+        padding: 28px;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        box-shadow: 0 24px 80px rgba(0, 0, 0, 0.2);
+        animation: slideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        border: 1px solid var(--border);
+        transition: background var(--transition), border var(--transition);
+    }
+
+    @keyframes slideUp {
+        from { transform: translateY(30px); opacity: 0; }
+        to { transform: translateY(0); opacity: 1; }
+    }
+
+    .admin-header-google {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 16px;
+        padding-bottom: 12px;
+        border-bottom: 1px solid var(--border);
+    }
+
+    .admin-header-google h2 {
+        font-size: 18px;
+        color: var(--text);
+        font-weight: 600;
+        transition: color var(--transition);
+    }
+
+    .admin-close-google {
+        background: none;
+        border: none;
+        font-size: 24px;
+        cursor: pointer;
+        color: var(--text-muted);
+        padding: 0 8px;
+        transition: 0.3s ease;
+        font-family: 'Inter', sans-serif;
+    }
+
+    .admin-close-google:hover {
+        color: var(--danger);
+        transform: rotate(90deg);
+    }
+
+    .admin-body-google {
+        overflow-y: auto;
+        flex: 1;
+    }
+
+    .admin-body-google::-webkit-scrollbar {
+        width: 4px;
+    }
+
+    .admin-body-google::-webkit-scrollbar-thumb {
+        background: var(--border);
+        border-radius: 10px;
+    }
+
+    /* ============================================================
+       ADMIN ITEMS
+       ============================================================ */
+    .admin-item-google {
+        padding: 12px 16px;
+        border-radius: 12px;
+        background: var(--input-bg);
+        margin-bottom: 10px;
+        border-left: 4px solid var(--primary);
+        transition: background var(--transition);
+    }
+
+    .admin-item-google .top {
+        display: flex;
+        justify-content: space-between;
+        font-weight: 600;
+        color: var(--text);
+        font-size: 14px;
+        transition: color var(--transition);
+    }
+
+    .admin-item-google .detail {
+        font-size: 13px;
+        color: var(--text-muted);
+        margin-top: 4px;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        transition: color var(--transition);
+    }
+
+    .admin-item-google .time {
+        font-size: 11px;
+        color: #9aa0a6;
+        margin-top: 4px;
+    }
+
+    .admin-empty-google {
+        text-align: center;
+        color: var(--text-muted);
+        padding: 40px 0;
+        font-size: 14px;
+        transition: color var(--transition);
+    }
+
+    /* ============================================================
+       ADMIN ACTIONS
+       ============================================================ */
+    .admin-actions-google {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+        margin-top: 12px;
+        padding-top: 12px;
+        border-top: 1px solid var(--border);
+    }
+
+    .admin-actions-google .btn-sm {
+        padding: 8px 16px;
+        border: none;
+        border-radius: 20px;
+        font-size: 13px;
+        font-weight: 500;
+        font-family: 'Inter', sans-serif;
+        cursor: pointer;
+        transition: 0.3s ease;
+    }
+
+    .admin-actions-google .btn-sm:hover {
+        transform: scale(1.02);
+    }
+
+    .admin-actions-google .btn-sm.danger {
+        background: var(--danger);
+        color: white;
+    }
+
+    .admin-actions-google .btn-sm.danger:hover {
+        background: #d33426;
+    }
+
+    .admin-actions-google .btn-sm.secondary {
+        background: var(--border);
+        color: var(--text);
+    }
+
+    .admin-actions-google .btn-sm.secondary:hover {
+        background: var(--input-bg);
+    }
+
+    .admin-actions-google .btn-sm.primary {
+        background: var(--primary);
+        color: white;
+    }
+
+    .admin-actions-google .btn-sm.primary:hover {
+        background: var(--primary-hover);
+    }
+
+    /* ============================================================
+       ADMIN PASSWORD INPUT
+       ============================================================ */
+    .admin-password-input-google {
+        display: flex;
+        gap: 10px;
+        margin-top: 12px;
+        padding-top: 12px;
+        border-top: 1px solid var(--border);
+    }
+
+    .admin-password-input-google input {
+        flex: 1;
+        padding: 10px 14px;
+        border: 1.5px solid var(--border);
+        border-radius: 12px;
+        font-size: 14px;
+        font-family: 'Inter', sans-serif;
+        outline: none;
+        transition: 0.3s ease;
+        background: var(--input-bg);
+        color: var(--text);
+    }
+
+    .admin-password-input-google input:focus {
+        border-color: var(--primary);
+        box-shadow: 0 0 0 4px rgba(26, 115, 232, 0.08);
+    }
+
+    .admin-password-input-google button {
+        padding: 10px 20px;
+        background: var(--primary);
+        color: white;
+        border: none;
+        border-radius: 12px;
+        font-weight: 600;
+        font-family: 'Inter', sans-serif;
+        cursor: pointer;
+        transition: 0.3s ease;
+    }
+
+    .admin-password-input-google button:hover {
+        background: var(--primary-hover);
+    }
+
+    /* ============================================================
+       PRODUCT MANAGEMENT (Admin)
+       ============================================================ */
+    .product-mgmt-google {
+        background: var(--input-bg);
+        border-radius: 16px;
+        padding: 16px;
+        margin-bottom: 16px;
+        transition: background var(--transition);
+    }
+
+    .product-mgmt-google h3 {
+        font-size: 15px;
+        color: var(--text);
+        margin-bottom: 12px;
+        font-weight: 600;
+        transition: color var(--transition);
+    }
+
+    .product-mgmt-google .form-row {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+    }
+
+    .product-mgmt-google .form-row .full {
+        grid-column: 1 / -1;
+    }
+
+    .product-mgmt-google .form-group {
+        margin-bottom: 0;
+    }
+
+    .product-mgmt-google .form-group label {
+        font-size: 12px;
+        color: var(--text-muted);
+        font-weight: 500;
+        display: block;
+        margin-bottom: 4px;
+        transition: color var(--transition);
+    }
+
+    .product-mgmt-google .form-group input,
+    .product-mgmt-google .form-group select {
+        padding: 8px 12px;
+        font-size: 13px;
+        border-radius: 10px;
+        width: 100%;
+        border: 1.5px solid var(--border);
+        outline: none;
+        font-family: 'Inter', sans-serif;
+        background: var(--card-bg);
+        color: var(--text);
+        transition: all 0.3s ease;
+    }
+
+    .product-mgmt-google .form-group input:focus,
+    .product-mgmt-google .form-group select:focus {
+        border-color: var(--primary);
+        box-shadow: 0 0 0 4px rgba(26, 115, 232, 0.08);
+    }
+
+    .product-mgmt-google .btn-sm {
+        padding: 8px 16px;
+        border: none;
+        border-radius: 20px;
+        font-size: 13px;
+        font-weight: 500;
+        font-family: 'Inter', sans-serif;
+        cursor: pointer;
+        transition: 0.3s ease;
+        margin-top: 8px;
+    }
+
+    .product-mgmt-google .btn-sm:hover {
+        transform: scale(1.02);
+    }
+
+    .product-mgmt-google .btn-sm.success {
+        background: var(--success);
+        color: white;
+    }
+
+    .product-mgmt-google .btn-sm.success:hover {
+        background: #2d9249;
+    }
+
+    .product-mgmt-google .btn-sm.warning {
+        background: var(--warning);
+        color: #1a1a1a;
+    }
+
+    .product-mgmt-google .btn-sm.warning:hover {
+        background: #e6a800;
+    }
+
+    .product-mgmt-google .btn-sm.danger {
+        background: var(--danger);
+        color: white;
+    }
+
+    .product-mgmt-google .btn-sm.danger:hover {
+        background: #d33426;
+    }
+
+    .product-mgmt-google .btn-sm.secondary {
+        background: var(--border);
+        color: var(--text);
+    }
+
+    .product-mgmt-google .btn-sm.secondary:hover {
+        background: var(--input-bg);
+    }
+
+    /* ============================================================
+       PRODUCT LIST ITEMS (Admin)
+       ============================================================ */
+    .product-list-item-google {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 10px 14px;
+        background: var(--card-bg);
+        border-radius: 12px;
+        margin-bottom: 8px;
+        border: 1px solid var(--border);
+        transition: background var(--transition), border var(--transition);
+    }
+
+    .product-list-item-google .info {
+        flex: 1;
+    }
+
+    .product-list-item-google .info .name {
+        font-weight: 600;
+        font-size: 14px;
+        color: var(--text);
+        transition: color var(--transition);
+    }
+
+    .product-list-item-google .info .desc {
+        font-size: 12px;
+        color: var(--text-muted);
+        transition: color var(--transition);
+    }
+
+    .product-list-item-google .info .price {
+        font-size: 13px;
+        color: var(--primary);
+        font-weight: 600;
+        transition: color var(--transition);
+    }
+
+    .product-list-item-google .info .tag-badge {
+        display: inline-block;
+        font-size: 10px;
+        font-weight: 600;
+        padding: 2px 8px;
+        border-radius: 10px;
+        background: var(--badge-bg);
+        color: var(--badge-text);
+        margin-top: 2px;
+    }
+
+    .product-list-item-google .actions {
+        display: flex;
+        gap: 6px;
+    }
+
+    .product-list-item-google .actions button {
+        padding: 4px 10px;
+        border: none;
+        border-radius: 8px;
+        font-size: 12px;
+        font-family: 'Inter', sans-serif;
+        cursor: pointer;
+        transition: 0.3s ease;
+    }
+
+    .product-list-item-google .actions .edit-btn {
+        background: var(--tag-bg);
+        color: var(--tag-text);
+    }
+
+    .product-list-item-google .actions .edit-btn:hover {
+        background: var(--primary);
+        color: white;
+    }
+
+    .product-list-item-google .actions .delete-btn {
+        background: #fce8e6;
+        color: var(--danger);
+    }
+
+    .product-list-item-google .actions .delete-btn:hover {
+        background: var(--danger);
+        color: white;
+    }
+
+    .loading-spinner-google {
+        text-align: center;
+        padding: 30px 0;
+        color: var(--text-muted);
+        font-size: 14px;
+        font-family: 'Inter', sans-serif;
+        transition: color var(--transition);
+    }
+
+    /* ============================================================
+       LOADING OVERLAY
+       ============================================================ */
+    .loading-overlay-google {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(255, 255, 255, 0.92);
+        backdrop-filter: blur(4px);
+        z-index: 2000;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        gap: 16px;
+    }
+
+    [data-theme="dark"] .loading-overlay-google {
+        background: rgba(13, 13, 26, 0.92);
+    }
+
+    .loading-overlay-google.show {
+        display: flex;
+    }
+
+    .loading-overlay-google .spinner {
+        width: 40px;
+        height: 40px;
+        border: 3px solid var(--border);
+        border-top-color: var(--primary);
+        border-radius: 50%;
+        animation: spin 0.8s linear infinite;
+    }
+
+    .loading-overlay-google p {
+        color: var(--text);
+        font-weight: 500;
+        font-size: 14px;
+        font-family: 'Inter', sans-serif;
+        transition: color var(--transition);
+    }
+
+    @keyframes spin {
+        to { transform: rotate(360deg); }
+    }
+
+    /* ============================================================
+       RESPONSIVE
+       ============================================================ */
+    @media (max-width: 480px) {
+        body { padding: 12px; }
+        
+        .card {
+            padding: 20px 16px 24px;
+            border-radius: 20px;
+        }
+
+        .google-header {
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .google-logo .text {
+            font-size: 14px;
+        }
+
+        .card-header h1 {
+            font-size: 20px;
+        }
+
+        .product-grid {
+            gap: 10px;
+        }
+        
+        .product-item {
+            min-height: 190px;
+            padding: 10px 8px 12px;
+        }
+        
+        .product-item .icon-box {
+            width: 56px;
+            height: 56px;
+            font-size: 26px;
+        }
+        
+        .product-item .info .name {
+            font-size: 11px;
+        }
+        
+        .product-item .price-section .current {
+            font-size: 15px;
+        }
+        
+        .product-item .action-buttons .btn-action {
+            font-size: 10px;
+            padding: 4px 10px;
+        }
+        
+        .product-detail-popup .popup-content {
+            padding: 20px 16px;
+        }
+
+        .price-display .amount {
+            font-size: 26px;
+        }
+
+        .admin-box-google {
+            padding: 20px;
+            border-radius: 20px;
+        }
+
+        .product-mgmt-google .form-row {
+            grid-template-columns: 1fr;
+        }
+
+        .bkash-box .number {
+            font-size: 20px;
+            flex-wrap: wrap;
+        }
+
+        .footer-google {
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+    }
+
+    @media (max-width: 380px) {
+        .card-header h1 {
+            font-size: 18px;
+        }
+
+        .product-grid {
+            gap: 8px;
+        }
+        
+        .product-item {
+            min-height: 170px;
+            padding: 8px 6px 10px;
+        }
+        
+        .product-item .icon-box {
+            width: 44px;
+            height: 44px;
+            font-size: 20px;
+        }
+        
+        .product-item .info .name {
+            font-size: 10px;
+        }
+        
+        .product-item .price-section .current {
+            font-size: 13px;
+        }
+    }
+    </style>
+</head>
+<body>
+
+<!-- ============================================================
+     LOADING OVERLAY
+     ============================================================ -->
+<div class="loading-overlay-google" id="loadingOverlay">
+    <div class="spinner"></div>
+    <p id="loadingText">Processing...</p>
+</div>
+
+<!-- ============================================================
+     HOME PAGE
+     ============================================================ -->
+<div class="page active" id="homePage">
+    <div class="card">
+
+        <!-- Header -->
+        <div class="google-header">
+            <div class="google-logo" id="adminTrigger">
+                <div class="g">
+                    <span>B</span><span>a</span><span>z</span><span>z</span><span>i</span><span>G</span><span>a</span><span>r</span>
+                </div>
+                <div class="text"><strong>Store</strong></div>
+            </div>
+            <div class="header-actions">
+                <button id="darkModeToggle" title="Toggle Dark Mode">🌙</button>
+                <button class="lang-toggle-google" id="langToggle">
+                    <span id="langText">বাং</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Badge -->
+        <div class="google-badge">
+            <span class="dot"></span>
+            <span id="badgeText">Special Offer</span>
+        </div>
+
+        <!-- Header -->
+        <div class="card-header">
+            <div class="sub" id="subTitle">🔥 Limited Time Offer</div>
+            <h1 id="homeTitle">Get <span class="highlight">Premium</span> Apps</h1>
+            <p id="homeSubtitle">Choose your app and save up to 40% today</p>
+        </div>
+
+        <!-- Features -->
+        <ul class="features-list" id="featuresList">
+            <li><span class="check">✓</span> Instant Delivery</li>
+            <li><span class="check">✓</span> Top Quality</li>
+            <li><span class="check">✓</span> Lifetime Access</li>
+            <li><span class="check">✓</span> Trusted Service</li>
+        </ul>
+
+        <!-- Product Grid -->
+        <div class="product-grid" id="productGrid"></div>
+
+        <!-- Form -->
+        <div class="form-group">
+            <label id="nameLabel">Full Name <span class="required">*</span> <span class="hint">(required)</span></label>
+            <input type="text" id="userName" placeholder="Enter your full name">
+        </div>
+
+        <div class="form-group">
+            <label id="phoneLabel">Phone Number <span class="required">*</span> <span class="hint">(required)</span></label>
+            <input type="tel" id="userPhone" placeholder="01XXXXXXXXX" maxlength="11">
+        </div>
+
+        <div class="form-group">
+            <label id="emailLabel">Email Address <span class="required">*</span> <span class="hint">(required)</span></label>
+            <input type="email" id="userEmail" placeholder="you@example.com">
+        </div>
+
+        <!-- Price Display -->
+        <div class="price-display">
+            <div class="label" id="priceLabel">Total Amount</div>
+            <div class="amount" id="displayPrice">৳ 0</div>
+            <div class="saved" id="savedText"></div>
+        </div>
+
+        <!-- Action Button -->
+        <button class="btn-google" id="goPaymentBtn" disabled>
+            <span id="goPaymentText">Get Started</span>
+            <span class="arrow">→</span>
+        </button>
+
+        <!-- Footer -->
+        <div class="footer-google">
+            <div class="order-counter">
+                <span class="live-dot"></span>
+                <span id="orderCounter">1,247 people ordered today</span>
+            </div>
+            <div class="footer-actions">
+                <button id="adminGearBtn" title="Admin Panel">⚙️</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<!-- ============================================================
+     PAYMENT PAGE
+     ============================================================ -->
+<div class="page" id="paymentPage">
+    <div class="card">
+
+        <button class="back-btn-google" id="backToHome">← <span id="backText">Back</span></button>
+
+        <!-- Header (small) -->
+        <div class="google-header" style="border-bottom: none; padding-bottom: 12px; margin-bottom: 16px;">
+            <div class="google-logo" style="cursor:default;">
+                <div class="g" style="font-size:20px;">
+                    <span>B</span><span>a</span><span>z</span><span>z</span><span>i</span><span>G</span><span>a</span><span>r</span>
+                </div>
+                <div class="text" style="font-size:13px;"><strong>Store</strong></div>
+            </div>
+        </div>
+
+        <!-- Payment Info -->
+        <div class="payment-card">
+            <div class="row"><span class="label" id="payNameLabel">👤 Name</span><span class="value" id="payName">-</span></div>
+            <div class="row"><span class="label" id="payPhoneLabel">📱 Phone</span><span class="value" id="payPhone">-</span></div>
+            <div class="row"><span class="label" id="payEmailLabel">📧 Email</span><span class="value" id="payEmail">-</span></div>
+            <div class="row"><span class="label" id="payProductLabel">📦 Plan</span><span class="value" id="payProduct">-</span></div>
+            <div class="row"><span class="label" id="payAmountLabel">💰 Total</span><span class="value amount" id="payAmount">৳ 0</span></div>
+        </div>
+
+        <!-- BKASH -->
+        <div class="bkash-box">
+            <div class="label" id="sendMoneyLabel">📌 Cash Out to this bKash number</div>
+            <div class="number">
+                <span id="bkashNumber">01936286283</span>
+                <button class="copy-btn" id="copyBkashBtn">📋</button>
+            </div>
+        </div>
+
+        <!-- Rules -->
+        <div class="rules-box" id="txnRules">
+            <strong id="txnRulesTitle">⚠️ Transaction ID Rules:</strong>
+            <span id="txnRulesText">• After Cash out , click confirm button.<br>• You will receive download link & video guide immediately.</span>
+        </div>
+
+        <!-- TXN Input -->
+        <div class="form-group">
+            <label id="txnLabel">🔑 Transaction ID</label>
+            <input type="text" id="txnId" placeholder="e.g., ABC123XYZ9" maxlength="10">
+        </div>
+
+        <!-- Status -->
+        <div class="status-box" id="paymentStatus">
+            <span class="emoji">✅</span>
+            <span id="paymentStatusText">Success</span>
+        </div>
+
+        <!-- Confirm Button -->
+        <button class="btn-google success" id="confirmBtn">
+            ✅ <span id="confirmText">Confirm Payment</span>
+        </button>
+        <div style="margin-top:12px;text-align:center;font-size:12px;color:var(--text-muted);transition:color var(--transition);" id="confirmNote">Click confirm after cash out</div>
+
+    </div>
+</div>
+
+<!-- ============================================================
+     CONFIRMATION PAGE
+     ============================================================ -->
+<div class="page" id="confirmationPage">
+    <div class="card">
+        <div class="confirmation-box">
+            <span class="icon">🎉</span>
+            <h2 id="successTitle">Payment Successful!</h2>
+            <p id="successMsg">Your order is complete! Download the app and follow the installation guide.</p>
+
+            <div class="link-box">
+                <strong id="downloadLabel">📥 Download App</strong>
+                <a href="#" id="downloadLink" target="_blank">Loading...</a>
+            </div>
+
+            <div class="link-box" style="background:var(--tag-bg);border-color:var(--primary);transition:background var(--transition), border var(--transition);">
+                <strong id="videoLabel">📹 Installation Guide</strong>
+                <a href="#" id="videoLink" target="_blank">Loading...</a>
+            </div>
+
+            <p style="margin-top:16px;font-size:13px;color:var(--text-muted);transition:color var(--transition);" id="videoNote">Watch the video for easy installation</p>
+
+            <button class="btn-google outline" id="newOrderBtn" style="margin-top:20px;">
+                🔄 <span id="newOrderText">New Order</span>
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- ============================================================
+     DETAILS POPUP (View বাটনে ক্লিক করলে)
+     ============================================================ -->
+<div class="product-detail-popup" id="productDetailPopup">
+    <div class="popup-content">
+        <button class="popup-close" id="popupClose">✕</button>
+        <span class="popup-icon" id="popupIcon">📸</span>
+        <div class="popup-name" id="popupName">Product Name</div>
+        <div class="popup-desc" id="popupDesc">Product Description</div>
+        <div style="text-align:center;">
+            <span class="popup-tag" id="popupTag">⭐ Bestseller</span>
+        </div>
+        <div class="popup-price">
+            <span class="original" id="popupOriginal">৳ 1500</span>
+            <span class="current" id="popupCurrent">৳ 1100</span>
+        </div>
+        <div class="popup-features" id="popupFeatures">
+            <span>✓ Instant Delivery</span>
+            <span>✓ Original Quality</span>
+        </div>
+        <button class="popup-buy-btn" id="popupBuyBtn"> Buy Now</button>
+    </div>
+</div>
+
+<!-- ============================================================
+     ADMIN PANEL
+     ============================================================ -->
+<div class="admin-panel-google" id="adminPanel">
+    <div class="admin-box-google">
+        <div class="admin-header-google">
+            <h2 id="adminTitle">📊 Admin Panel <span id="adminCount" style="font-size:14px;color:var(--text-muted);transition:color var(--transition);"></span></h2>
+            <button class="admin-close-google" id="adminClose">✕</button>
+        </div>
+        <div class="admin-body-google" id="adminBody">
+
+            <!-- Login Area -->
+            <div class="admin-password-input-google" id="adminLoginArea">
+                <input type="password" id="adminPassword" placeholder="Admin Password">
+                <button id="adminLoginBtn">🔓 Login</button>
+            </div>
+
+            <!-- Admin Content -->
+            <div id="adminContent" style="display:none;">
+
+                <!-- Product Management -->
+                <div class="product-mgmt-google" id="productMgmt">
+                    <h3 id="productMgmtTitle">📦 Product Management</h3>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label id="prodNameLabel">Product Name *</label>
+                            <input type="text" id="prodName" placeholder="Product name">
+                        </div>
+                        <div class="form-group">
+                            <label id="prodPriceLabel">Price (৳) *</label>
+                            <input type="number" id="prodPrice" placeholder="e.g., 1100">
+                        </div>
+                        <div class="form-group">
+                            <label id="prodDescLabel">Description *</label>
+                            <input type="text" id="prodDesc" placeholder="Short description">
+                        </div>
+                        <div class="form-group">
+                            <label id="prodIconLabel">Icon (Emoji or Image Link)</label>
+                            <input type="text" id="prodIcon" placeholder="e.g., 📸 or image.jpg">
+                        </div>
+                        <div class="form-group">
+                            <label id="prodOriginalLabel">Original Price (৳)</label>
+                            <input type="number" id="prodOriginal" placeholder="e.g., 1500">
+                        </div>
+                        <div class="form-group">
+                            <label id="prodTagLabel">Tag (Optional)</label>
+                            <select id="prodTag" style="width:100%;padding:8px 12px;border:1.5px solid var(--border);border-radius:10px;background:var(--card-bg);color:var(--text);font-family:'Inter',sans-serif;transition:all 0.3s ease;">
+                                <option value="">None</option>
+                                <option value="Bestseller">⭐ Bestseller</option>
+                                <option value="Popular">🔥 Popular</option>
+                                <option value="Limited Offer">⚡ Limited Offer</option>
+                                <option value="New">🆕 New</option>
+                                <option value="Sale">🏷️ Sale</option>
+                            </select>
+                        </div>
+                        <div class="form-group full">
+                            <label id="prodLinkLabel">Download Link *</label>
+                            <input type="url" id="prodLink" placeholder="https://drive.google.com/...">
+                        </div>
+                        <div class="form-group full">
+                            <label id="prodVideoLabel">Video Link *</label>
+                            <input type="url" id="prodVideo" placeholder="https://www.youtube.com/...">
+                        </div>
+                        <div class="form-group full" style="display:flex; gap:10px; flex-wrap:wrap;">
+                            <button class="btn-sm success" id="addProductBtn">➕ Add Product</button>
+                            <button class="btn-sm warning" id="updateProductBtn" style="display:none;">✏️ Update</button>
+                            <button class="btn-sm secondary" id="cancelEditBtn" style="display:none;">❌ Cancel</button>
+                        </div>
+                        <input type="hidden" id="editProductId" value="">
+                    </div>
+                </div>
+
+                <!-- Product List -->
+                <div id="productList">
+                    <div class="loading-spinner-google" id="productListLoading">Loading...</div>
+                </div>
+
+                <!-- Order List -->
+                <div style="margin-top:16px;border-top:1px solid var(--border);padding-top:16px;transition:border var(--transition);">
+                    <h3 style="font-size:15px;color:var(--text);margin-bottom:12px;font-weight:600;transition:color var(--transition);" id="orderListTitle">📋 Orders</h3>
+                    <div id="adminList"><div class="loading-spinner-google" id="adminListLoading">Loading...</div></div>
+                </div>
+
+                <!-- Admin Actions -->
+                <div class="admin-actions-google">
+                    <button class="btn-sm danger" id="adminDeleteAll">🗑️ Delete All</button>
+                    <button class="btn-sm secondary" id="adminRefresh">🔄 Refresh</button>
+                    <button class="btn-sm secondary" id="adminLogout">🚪 Logout</button>
+                    <button class="btn-sm primary" id="adminForceSync">📥 Force Sync</button>
+                </div>
+
+                <!-- Change Password -->
+                <div class="admin-password-input-google" style="margin-top:12px;border-top:1px solid var(--border);padding-top:12px;transition:border var(--transition);">
+                    <input type="password" id="adminNewPassword" placeholder="New Password">
+                    <button id="adminChangePassBtn">🔑 Change</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ============================================================
+     FIREBASE SDK
+     ============================================================ -->
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+
+<script>
+// ============================================================
+// 📦 PRODUCTS DATA (ইমেজ সহ)
+// ============================================================
+let PRODUCTS = [
+    { 
+        id: 'gphotos_android', 
+        name: 'Bazigar App - Android', 
+        desc: '⚡ Instant Access • Premium Quality', 
+        price: 1100,
+        originalPrice: 1500,
+        discount: 27,
+        icon: 'https://play-lh.googleusercontent.com/...', // ← আপনার ইমেজ লিংক দিন
+        tag: 'Bestseller',
+        featureTags: ['Android', 'Original Quality', 'Lifetime'],
+        link: 'https://drive.google.com/file/d/1qHbjIe_Ak9VpmRptE_t5gjOPsy9xWrRL/view?usp=drivesdk', 
+        video: 'https://www.youtube.com/watch?v=example1' 
+    },
+    { 
+        id: 'gphotos_win10', 
+        name: 'Bazigar App - Windows', 
+        desc: '🖥️ 4K Quality • Desktop Sync', 
+        price: 1200,
+        originalPrice: 1600,
+        discount: 25,
+        icon: 'https://play-lh.googleusercontent.com/...', // ← আপনার ইমেজ লিংক দিন
+        tag: 'Popular',
+        featureTags: ['Windows 10', '4K Quality', 'Lifetime'],
+        link: 'https://drive.google.com/file/d/1FJuYiRwvz0mtDzatulppwUummkwpFqEd/view?usp=drivesdk', 
+        video: 'https://www.youtube.com/watch?v=example2' 
+    },
+    { 
+        id: 'gphotos_both', 
+        name: 'Bazigar App - Ultimate Bundle', 
+        desc: '📱💻 Cross-Platform • Best Value', 
+        price: 2000,
+        originalPrice: 3000,
+        discount: 33,
+        icon: 'https://play-lh.googleusercontent.com/...', // ← আপনার ইমেজ লিংক দিন
+        tag: 'Limited Offer',
+        featureTags: ['Android + Win10', 'Best Value', 'Lifetime'],
+        link: 'https://drive.google.com/drive/folders/1BX2m9h6Qf6-TJjLr2WRgqYoX2wAtEKIa', 
+        video: 'https://www.youtube.com/watch?v=example3' 
+    }
+];
+
+// ============================================================
+// 🌐 TRANSLATIONS
+// ============================================================
+const translations = {
+    bn: {
+        badgeText: 'স্পেশাল অফার',
+        subTitle: '🔥 সীমিত সময়ের অফার',
+        homeTitle: '<span class="highlight">প্রিমিয়াম</span> অ্যাপ পান',
+        homeSubtitle: 'আপনার পছন্দের অ্যাপ বেছে নিন এবং ৪০% পর্যন্ত সাশ্রয় করুন',
+        featuresList: ['ইনস্ট্যান্ট ডেলিভারি', 'সেরা কোয়ালিটি', 'লাইফটাইম অ্যাক্সেস', 'বিশ্বস্ত সেবা'],
+        nameLabel: 'পুরো নাম',
+        namePlaceholder: 'আপনার পুরো নাম লিখুন',
+        phoneLabel: 'ফোন নম্বর',
+        phonePlaceholder: '01XXXXXXXXX',
+        emailLabel: 'ইমেইল ঠিকানা',
+        emailPlaceholder: 'you@example.com',
+        priceLabel: 'মোট পরিমাণ',
+        goPaymentText: 'অর্ডার করুন',
+        savedText: 'সাশ্রয় করছেন ৳{saved} ({discount}%)',
+        backText: 'পেছনে',
+        payNameLabel: '👤 নাম',
+        payPhoneLabel: '📱 ফোন',
+        payEmailLabel: '📧 ইমেইল',
+        payProductLabel: '📦 প্ল্যান',
+        payAmountLabel: '💰 মোট',
+        sendMoneyLabel: '📌 এই bKash নম্বরে টাকা Cash Out করুন',
+        txnRulesTitle: '⚠️ ট্রানজেকশন আইডি বিধি:',
+        txnRulesText: '• টাকা Cash Out করুনোর পর কনফার্ম বাটনে ক্লিক করুন।<br>• সাথে সাথেই ডাউনলোড লিংক ও ভিডিও গাইড পাবেন।',
+        txnLabel: '🔑 ট্রানজেকশন আইডি',
+        txnPlaceholder: 'যেমন: ABC123XYZ9',
+        confirmText: 'পেমেন্ট কনফার্ম করুন',
+        confirmNote: 'টাকা Cash Out করুনোর পর কনফার্ম বাটনে ক্লিক করুন',
+        paymentSuccess: 'লেনদেন সফল!',
+        successTitle: 'পেমেন্ট সফল! 🎉',
+        successMsg: 'আপনার অর্ডার সম্পন্ন হয়েছে! অ্যাপ ডাউনলোড করুন এবং ইনস্টলেশন গাইড অনুসরণ করুন।',
+        downloadLabel: '📥 অ্যাপ ডাউনলোড করুন',
+        videoLabel: '📹 ইনস্টলেশন গাইড',
+        videoNote: 'সহজে ইন্সটল করতে ভিডিওটি দেখুন',
+        newOrderText: 'নতুন অর্ডার',
+        adminTitle: '📊 অ্যাডমিন প্যানেল',
+        adminPasswordPlaceholder: 'অ্যাডমিন পাসওয়ার্ড',
+        adminLoginBtn: '🔓 লগইন',
+        productMgmtTitle: '📦 প্রোডাক্ট ম্যানেজমেন্ট',
+        prodNameLabel: 'প্রোডাক্টের নাম *',
+        prodNamePlaceholder: 'প্রোডাক্টের নাম',
+        prodPriceLabel: 'দাম (৳) *',
+        prodPricePlaceholder: 'যেমন: 1100',
+        prodDescLabel: 'বিবরণ *',
+        prodDescPlaceholder: 'ছোট বিবরণ',
+        prodIconLabel: 'আইকন (ইমোজি বা ছবির লিংক)',
+        prodIconPlaceholder: 'যেমন: 📸 বা image.jpg',
+        prodOriginalLabel: 'আসল দাম (৳)',
+        prodOriginalPlaceholder: 'যেমন: 1500',
+        prodTagLabel: 'ট্যাগ (ঐচ্ছিক)',
+        prodLinkLabel: 'ডাউনলোড লিংক *',
+        prodLinkPlaceholder: 'https://drive.google.com/...',
+        prodVideoLabel: 'ভিডিও লিংক *',
+        prodVideoPlaceholder: 'https://www.youtube.com/...',
+        addProductBtn: '➕ প্রোডাক্ট যোগ করুন',
+        updateProductBtn: '✏️ আপডেট করুন',
+        cancelEditBtn: '❌ বাতিল করুন',
+        orderListTitle: '📋 অর্ডার লিস্ট',
+        adminDeleteAll: '🗑️ সব ডিলিট',
+        adminRefresh: '🔄 রিফ্রেশ',
+        adminLogout: '🚪 লগআউট',
+        adminChangePass: '🔑 পরিবর্তন',
+        adminNewPassPlaceholder: 'নতুন পাসওয়ার্ড',
+        noOrders: '📭 কোনো অর্ডার নেই',
+        noProducts: '📭 কোনো প্রোডাক্ট নেই',
+        loadingText: 'প্রসেসিং হচ্ছে...',
+        langText: 'En',
+        orderCounter: '{count} জন আজ অর্ডার করেছেন',
+        adminCountText: '📊 Total: {count} orders',
+        forceSync: '📥 ফোর্স সিঙ্ক'
+    },
+    en: {
+        badgeText: 'Special Offer',
+        subTitle: '🔥 Limited Time Offer',
+        homeTitle: 'Get <span class="highlight">Premium</span> Apps',
+        homeSubtitle: 'Choose your app and save up to 40% today',
+        featuresList: ['Instant Delivery', 'Top Quality', 'Lifetime Access', 'Trusted Service'],
+        nameLabel: 'Full Name',
+        namePlaceholder: 'Enter your full name',
+        phoneLabel: 'Phone Number',
+        phonePlaceholder: '01XXXXXXXXX',
+        emailLabel: 'Email Address',
+        emailPlaceholder: 'you@example.com',
+        priceLabel: 'Total Amount',
+        goPaymentText: 'Get Started',
+        savedText: 'You save ৳{saved} ({discount}%)',
+        backText: 'Back',
+        payNameLabel: '👤 Name',
+        payPhoneLabel: '📱 Phone',
+        payEmailLabel: '📧 Email',
+        payProductLabel: '📦 Plan',
+        payAmountLabel: '💰 Total',
+        sendMoneyLabel: '📌 Cash Out to this bKash number',
+        txnRulesTitle: '⚠️ Transaction ID Rules:',
+        txnRulesText: '• After cash out, click confirm button.<br>• You will receive download link & video guide immediately.',
+        txnLabel: '🔑 Transaction ID',
+        txnPlaceholder: 'e.g., ABC123XYZ9',
+        confirmText: 'Confirm Payment',
+        confirmNote: 'Click confirm after cash out',
+        paymentSuccess: 'Transaction Successful!',
+        successTitle: 'Payment Successful! 🎉',
+        successMsg: 'Your order is complete! Download the app and follow the installation guide.',
+        downloadLabel: '📥 Download App',
+        videoLabel: '📹 Installation Guide',
+        videoNote: 'Watch the video for easy installation',
+        newOrderText: 'New Order',
+        adminTitle: '📊 Admin Panel',
+        adminPasswordPlaceholder: 'Admin Password',
+        adminLoginBtn: '🔓 Login',
+        productMgmtTitle: '📦 Product Management',
+        prodNameLabel: 'Product Name *',
+        prodNamePlaceholder: 'Product name',
+        prodPriceLabel: 'Price (৳) *',
+        prodPricePlaceholder: 'e.g., 1100',
+        prodDescLabel: 'Description *',
+        prodDescPlaceholder: 'Short description',
+        prodIconLabel: 'Icon (Emoji or Image Link)',
+        prodIconPlaceholder: 'e.g., 📸 or image.jpg',
+        prodOriginalLabel: 'Original Price (৳)',
+        prodOriginalPlaceholder: 'e.g., 1500',
+        prodTagLabel: 'Tag (Optional)',
+        prodLinkLabel: 'Download Link *',
+        prodLinkPlaceholder: 'https://drive.google.com/...',
+        prodVideoLabel: 'Video Link *',
+        prodVideoPlaceholder: 'https://www.youtube.com/...',
+        addProductBtn: '➕ Add Product',
+        updateProductBtn: '✏️ Update',
+        cancelEditBtn: '❌ Cancel',
+        orderListTitle: '📋 Orders',
+        adminDeleteAll: '🗑️ Delete All',
+        adminRefresh: '🔄 Refresh',
+        adminLogout: '🚪 Logout',
+        adminChangePass: '🔑 Change',
+        adminNewPassPlaceholder: 'New Password',
+        noOrders: '📭 No orders',
+        noProducts: '📭 No products',
+        loadingText: 'Processing...',
+        langText: 'বাং',
+        orderCounter: '{count} people ordered today',
+        adminCountText: '📊 Total: {count} orders',
+        forceSync: '📥 Force Sync'
+    }
+};
+
+// ============================================================
+// 🔥 FIREBASE CONFIG
+// ============================================================
+const firebaseConfig = {
+    apiKey: "AIzaSyAIJOPcVmKMXAhEy-Kj2s8vjzcMJEzbLsU",
+    authDomain: "payment-web-4624d.firebaseapp.com",
+    databaseURL: "https://payment-web-4624d-default-rtdb.asia-southeast1.firebasedatabase.app",
+    projectId: "payment-web-4624d",
+    storageBucket: "payment-web-4624d.firebasestorage.app",
+    messagingSenderId: "928876888636",
+    appId: "1:928876888636:web:22117005f14a8d54563939",
+    measurementId: "G-RNGK2L1MDC"
+};
+
+// ============================================================
+// 📨 TELEGRAM CONFIG
+// ============================================================
+const TELEGRAM_WORKER_URL = 'https://bazzigarstore.hyperos2001.workers.dev';
+
+// ============================================================
+// 🔐 CONFIG
+// ============================================================
+let ADMIN_PASSWORD = '@Abusiddi783';
+let isAdminLoggedIn = false;
+let currentLang = 'en';
+let selectedProduct = null;
+let currentOrderData = null;
+let allTransactions = [];
+let firebaseApp, database;
+let isFirebaseReady = false;
+let isDarkMode = false;
+
+// ============================================================
+// 🔥 FIREBASE INIT
+// ============================================================
+try {
+    firebaseApp = firebase.initializeApp(firebaseConfig);
+    database = firebase.database();
+    isFirebaseReady = true;
+    console.log('✅ Firebase connected');
+} catch (e) {
+    console.error('❌ Firebase error:', e);
+    isFirebaseReady = false;
+}
+
+// ============================================================
+// 🌙 DARK MODE
+// ============================================================
+function toggleDarkMode() {
+    isDarkMode = !isDarkMode;
+    document.documentElement.setAttribute('data-theme', isDarkMode ? 'dark' : 'light');
+    document.getElementById('darkModeToggle').textContent = isDarkMode ? '☀️' : '🌙';
+    localStorage.setItem('darkMode', isDarkMode ? 'dark' : 'light');
+}
+
+function loadDarkMode() {
+    const saved = localStorage.getItem('darkMode');
+    if (saved === 'dark') {
+        isDarkMode = true;
+        document.documentElement.setAttribute('data-theme', 'dark');
+        document.getElementById('darkModeToggle').textContent = '☀️';
+    } else {
+        document.documentElement.setAttribute('data-theme', 'light');
+        document.getElementById('darkModeToggle').textContent = '🌙';
+    }
+}
+
+// ============================================================
+// 🌐 LANGUAGE FUNCTIONS
+// ============================================================
+function setLanguage(lang) {
+    currentLang = lang;
+    const t = translations[lang];
+    
+    document.getElementById('badgeText').textContent = t.badgeText;
+    document.getElementById('subTitle').textContent = t.subTitle;
+    document.getElementById('homeTitle').innerHTML = t.homeTitle;
+    document.getElementById('homeSubtitle').textContent = t.homeSubtitle;
+    document.getElementById('nameLabel').innerHTML = t.nameLabel + ' <span class="required">*</span> <span class="hint">(required)</span>';
+    document.getElementById('userName').placeholder = t.namePlaceholder;
+    document.getElementById('phoneLabel').innerHTML = t.phoneLabel + ' <span class="required">*</span> <span class="hint">(required)</span>';
+    document.getElementById('userPhone').placeholder = t.phonePlaceholder;
+    document.getElementById('emailLabel').innerHTML = t.emailLabel + ' <span class="required">*</span> <span class="hint">(required)</span>';
+    document.getElementById('userEmail').placeholder = t.emailPlaceholder;
+    document.getElementById('priceLabel').textContent = t.priceLabel;
+    document.getElementById('goPaymentText').textContent = t.goPaymentText;
+    document.getElementById('loadingText').textContent = t.loadingText;
+    
+    const featuresList = document.getElementById('featuresList');
+    featuresList.innerHTML = t.featuresList.map(f => `<li><span class="check">✓</span> ${f}</li>`).join('');
+    
+    updateOrderCounter();
+    
+    document.getElementById('backText').textContent = t.backText;
+    document.getElementById('payNameLabel').textContent = t.payNameLabel;
+    document.getElementById('payPhoneLabel').textContent = t.payPhoneLabel;
+    document.getElementById('payEmailLabel').textContent = t.payEmailLabel;
+    document.getElementById('payProductLabel').textContent = t.payProductLabel;
+    document.getElementById('payAmountLabel').textContent = t.payAmountLabel;
+    document.getElementById('sendMoneyLabel').textContent = t.sendMoneyLabel;
+    document.getElementById('txnRulesTitle').textContent = t.txnRulesTitle;
+    document.getElementById('txnRulesText').innerHTML = t.txnRulesText;
+    document.getElementById('txnLabel').textContent = t.txnLabel;
+    document.getElementById('txnId').placeholder = t.txnPlaceholder;
+    document.getElementById('confirmText').textContent = t.confirmText;
+    document.getElementById('confirmNote').textContent = t.confirmNote;
+    document.getElementById('paymentStatusText').textContent = t.paymentSuccess;
+    
+    document.getElementById('successTitle').textContent = t.successTitle;
+    document.getElementById('successMsg').textContent = t.successMsg;
+    document.getElementById('downloadLabel').textContent = t.downloadLabel;
+    document.getElementById('videoLabel').textContent = t.videoLabel;
+    document.getElementById('videoNote').textContent = t.videoNote;
+    document.getElementById('newOrderText').textContent = t.newOrderText;
+    
+    document.getElementById('adminTitle').innerHTML = t.adminTitle + ' <span id="adminCount" style="font-size:14px;color:var(--text-muted);"></span>';
+    document.getElementById('adminPassword').placeholder = t.adminPasswordPlaceholder;
+    document.getElementById('adminLoginBtn').textContent = t.adminLoginBtn;
+    document.getElementById('productMgmtTitle').textContent = t.productMgmtTitle;
+    document.getElementById('prodNameLabel').textContent = t.prodNameLabel;
+    document.getElementById('prodName').placeholder = t.prodNamePlaceholder;
+    document.getElementById('prodPriceLabel').textContent = t.prodPriceLabel;
+    document.getElementById('prodPrice').placeholder = t.prodPricePlaceholder;
+    document.getElementById('prodDescLabel').textContent = t.prodDescLabel;
+    document.getElementById('prodDesc').placeholder = t.prodDescPlaceholder;
+    document.getElementById('prodIconLabel').textContent = t.prodIconLabel;
+    document.getElementById('prodIcon').placeholder = t.prodIconPlaceholder;
+    document.getElementById('prodOriginalLabel').textContent = t.prodOriginalLabel;
+    document.getElementById('prodOriginal').placeholder = t.prodOriginalPlaceholder;
+    document.getElementById('prodTagLabel').textContent = t.prodTagLabel;
+    document.getElementById('prodLinkLabel').textContent = t.prodLinkLabel;
+    document.getElementById('prodLink').placeholder = t.prodLinkPlaceholder;
+    document.getElementById('prodVideoLabel').textContent = t.prodVideoLabel;
+    document.getElementById('prodVideo').placeholder = t.prodVideoPlaceholder;
+    document.getElementById('addProductBtn').textContent = t.addProductBtn;
+    document.getElementById('updateProductBtn').textContent = t.updateProductBtn;
+    document.getElementById('cancelEditBtn').textContent = t.cancelEditBtn;
+    document.getElementById('orderListTitle').textContent = t.orderListTitle;
+    document.getElementById('adminDeleteAll').textContent = t.adminDeleteAll;
+    document.getElementById('adminRefresh').textContent = t.adminRefresh;
+    document.getElementById('adminLogout').textContent = t.adminLogout;
+    document.getElementById('adminChangePassBtn').textContent = t.adminChangePass;
+    document.getElementById('adminNewPassword').placeholder = t.adminNewPassPlaceholder;
+    document.getElementById('adminForceSync').textContent = t.forceSync;
+    
+    document.getElementById('langText').textContent = t.langText;
+    
+    if (isAdminLoggedIn) {
+        updateAdminOrderCount();
+    }
+    
+    renderProducts();
+    if (isAdminLoggedIn) renderAdminList(allTransactions);
+    
+    console.log('🌐 Language changed to:', lang);
+}
+
+// ============================================================
+// 📊 ORDER COUNTER
+// ============================================================
+function updateOrderCounter() {
+    const t = translations[currentLang];
+    const count = Math.floor(1000 + Math.random() * 500);
+    document.getElementById('orderCounter').textContent = t.orderCounter.replace('{count}', count.toLocaleString());
+}
+
+// ============================================================
+// 📊 ADMIN ORDER COUNT
+// ============================================================
+function updateAdminOrderCount() {
+    const t = translations[currentLang];
+    const count = allTransactions.length || 0;
+    document.getElementById('adminCount').textContent = t.adminCountText.replace('{count}', count);
+}
+
+// ============================================================
+// 🏠 RENDER PRODUCTS (ইমেজ সাপোর্ট সহ)
+// ============================================================
+function renderProducts() {
+    const productGrid = document.getElementById('productGrid');
+    productGrid.innerHTML = '';
+    
+    PRODUCTS.forEach((product, index) => {
+        const div = document.createElement('div');
+        div.className = 'product-item';
+        div.dataset.index = index;
+        
+        // Tag badge
+        let tagHtml = '';
+        if (product.tag && product.tag !== 'None') {
+            const tagClass = product.tag.toLowerCase().includes('popular') ? 'popular' 
+                : product.tag.toLowerCase().includes('limited') ? 'limited' : '';
+            tagHtml = `<span class="tag ${tagClass}">${product.tag}</span>`;
+        }
+        
+        // Feature tags
+        let featureTagsHtml = '';
+        if (product.featureTags && product.featureTags.length > 0) {
+            featureTagsHtml = `<div class="feature-tags">${product.featureTags.map(t => `<span>✓ ${t}</span>`).join('')}</div>`;
+        }
+        
+        // Discount calculation
+        const discountPercent = product.discount || Math.round(((product.originalPrice - product.price) / product.originalPrice) * 100);
+        
+        // ✅ ইমেজ বা ইমোজি দেখানোর লজিক
+        let iconHtml = '';
+        if (product.icon && (product.icon.startsWith('http') || product.icon.includes('/') || product.icon.includes('.'))) {
+            iconHtml = `<img src="${product.icon}" alt="${product.name}">`;
+        } else {
+            iconHtml = product.icon || '📦';
+        }
+        
+        div.innerHTML = `
+            ${tagHtml}
+            <div class="icon-box">${iconHtml}</div>
+            <div class="info">
+                <div class="name">${product.name}</div>
+                ${featureTagsHtml}
+            </div>
+            <div class="price-section">
+                ${product.originalPrice ? `<span class="original">৳ ${product.originalPrice}</span>` : ''}
+                <span class="current">৳ ${product.price}</span>
+                ${discountPercent > 0 ? `<span class="discount-badge">Save ${discountPercent}%</span>` : ''}
+            </div>
+            <div class="action-buttons">
+                <button class="btn-action btn-buy" data-index="${index}">
+                     Buy Now
+                </button>
+                <button class="btn-action btn-view" data-index="${index}">
+                     View
+                </button>
+            </div>
+        `;
+        
+        // ===== Buy Button =====
+        div.querySelector('.btn-buy').addEventListener('click', function(e) {
+            e.stopPropagation();
+            const idx = parseInt(this.dataset.index);
+            selectedProduct = PRODUCTS[idx];
+            
+            document.querySelectorAll('.product-item').forEach(el => el.classList.remove('selected'));
+            this.closest('.product-item').classList.add('selected');
+            
+            const price = selectedProduct.price;
+            const original = selectedProduct.originalPrice || price;
+            const savedAmount = original - price;
+            const discountPct = selectedProduct.discount || Math.round((savedAmount / original) * 100);
+            
+            document.getElementById('displayPrice').textContent = `৳ ${price}`;
+            
+            const t = translations[currentLang];
+            if (original > price) {
+                document.getElementById('savedText').textContent = t.savedText
+                    .replace('{saved}', savedAmount)
+                    .replace('{discount}', discountPct);
+                document.getElementById('savedText').style.display = 'block';
+            } else {
+                document.getElementById('savedText').style.display = 'none';
+            }
+            
+            document.getElementById('goPaymentBtn').disabled = false;
+            
+            document.querySelector('.form-group').scrollIntoView({ behavior: 'smooth', block: 'center' });
+        });
+        
+        // ===== View Button =====
+        div.querySelector('.btn-view').addEventListener('click', function(e) {
+            e.stopPropagation();
+            const idx = parseInt(this.dataset.index);
+            const p = PRODUCTS[idx];
+            
+            // পপআপে ছবি দেখান
+            let popupIconHtml = '';
+            if (p.icon && (p.icon.startsWith('http') || p.icon.includes('/') || p.icon.includes('.'))) {
+                popupIconHtml = `<img src="${p.icon}" alt="${p.name}">`;
+            } else {
+                popupIconHtml = p.icon || '📦';
+            }
+            
+            document.getElementById('popupIcon').innerHTML = popupIconHtml;
+            document.getElementById('popupName').textContent = p.name;
+            document.getElementById('popupDesc').textContent = p.desc;
+            document.getElementById('popupTag').textContent = p.tag || '✨ Special';
+            document.getElementById('popupOriginal').textContent = p.originalPrice ? `৳ ${p.originalPrice}` : '';
+            document.getElementById('popupCurrent').textContent = `৳ ${p.price}`;
+            document.getElementById('popupFeatures').innerHTML = p.featureTags ? p.featureTags.map(t => `<span>✓ ${t}</span>`).join('') : '';
+            
+            document.getElementById('popupBuyBtn').onclick = function() {
+                document.getElementById('productDetailPopup').classList.remove('show');
+                const buyBtn = div.querySelector('.btn-buy');
+                buyBtn.click();
+            };
+            
+            document.getElementById('productDetailPopup').classList.add('show');
+        });
+        
+        productGrid.appendChild(div);
+    });
+}
+
+// ============================================================
+// 📄 PAGE NAVIGATION
+// ============================================================
+function showPage(pageId) {
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    document.getElementById(pageId).classList.add('active');
+}
+
+// ============================================================
+// 💳 GO TO PAYMENT
+// ============================================================
+function goToPayment() {
+    const name = document.getElementById('userName').value.trim();
+    const phone = document.getElementById('userPhone').value.trim();
+    const email = document.getElementById('userEmail').value.trim();
+
+    if (!selectedProduct) {
+        alert('Please select a product first');
+        return;
+    }
+
+    if (!name || name.length < 2) {
+        alert('Please enter your full name');
+        document.getElementById('userName').focus();
+        return;
+    }
+
+    if (!phone || phone.length !== 11 || !/^01[3-9]\d{8}$/.test(phone)) {
+        alert('Please enter a valid phone number (01XXXXXXXXX)');
+        document.getElementById('userPhone').focus();
+        return;
+    }
+
+    if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+        alert('Please enter a valid email');
+        document.getElementById('userEmail').focus();
+        return;
+    }
+
+    currentOrderData = {
+        name: name,
+        phone: phone,
+        email: email,
+        product: selectedProduct,
+        amount: selectedProduct.price
+    };
+
+    document.getElementById('payName').textContent = name;
+    document.getElementById('payPhone').textContent = phone;
+    document.getElementById('payEmail').textContent = email;
+    document.getElementById('payProduct').textContent = selectedProduct.name + ' (' + selectedProduct.desc + ')';
+    document.getElementById('payAmount').textContent = '৳ ' + selectedProduct.price;
+
+    document.getElementById('txnId').value = '';
+    document.getElementById('paymentStatus').classList.remove('show');
+
+    showPage('paymentPage');
+}
+
+// ============================================================
+// ✅ CONFIRM PAYMENT
+// ============================================================
+function confirmPayment() {
+    const txn = document.getElementById('txnId').value.trim();
+
+    if (!txn) {
+        const msg = currentLang === 'bn' ? 'ট্রানজেকশন আইডি লিখুন' : 'Please enter transaction ID';
+        showPaymentStatus('❌', msg, 'error');
+        return;
+    }
+
+    const hasUpper = /[A-Z]/.test(txn);
+    const hasDigit = /[0-9]/.test(txn);
+
+    if (txn.length !== 10 || !hasUpper || !hasDigit) {
+        const msg = currentLang === 'bn'
+            ? 'ভুল ট্রানজেকশন আইডি! এতে অবশ্যই ১০টি অক্ষর, কমপক্ষে ১টি বড় হাতের ইংরেজি অক্ষর (A-Z) এবং ১টি সংখ্যা থাকতে হবে।'
+            : 'Invalid Transaction ID! It must be exactly 10 characters, including at least 1 uppercase English letter (A-Z) and 1 digit.';
+        showPaymentStatus('❌', msg, 'error');
+        return;
+    }
+
+    if (allTransactions.some(t => t.txnId === txn)) {
+        showPaymentStatus('❌', 'This transaction ID already used', 'error');
+        return;
+    }
+
+    document.getElementById('loadingOverlay').classList.add('show');
+
+    const now = new Date();
+    const timeStr = now.toLocaleString('bn-BD', { timeZone: 'Asia/Dhaka' });
+
+    const orderData = {
+        name: currentOrderData.name,
+        phone: currentOrderData.phone,
+        email: currentOrderData.email,
+        productName: currentOrderData.product.name,
+        productDesc: currentOrderData.product.desc,
+        amount: currentOrderData.product.price,
+        txnId: txn,
+        time: timeStr,
+        timestamp: Date.now(),
+        link: currentOrderData.product.link,
+        video: currentOrderData.product.video,
+        status: 'completed'
+    };
+
+    if (isFirebaseReady) {
+        database.ref('transactions').push(orderData)
+            .then(() => sendToTelegram(orderData))
+            .catch(e => { console.error('Firebase error:', e); sendToTelegram(orderData); });
+    } else {
+        sendToTelegram(orderData);
+    }
+
+    try {
+        const local = JSON.parse(localStorage.getItem('orders') || '[]');
+        local.unshift(orderData);
+        if (local.length > 100) local.pop();
+        localStorage.setItem('orders', JSON.stringify(local));
+    } catch (e) {}
+
+    allTransactions.unshift(orderData);
+    
+    if (isAdminLoggedIn) {
+        updateAdminOrderCount();
+    }
+
+    setTimeout(() => {
+        document.getElementById('loadingOverlay').classList.remove('show');
+        showPaymentStatus('✅', 'Payment confirmed! Redirecting...', 'success');
+        
+        setTimeout(() => {
+            document.getElementById('downloadLink').href = orderData.link;
+            document.getElementById('downloadLink').textContent = orderData.link;
+            document.getElementById('videoLink').href = orderData.video;
+            document.getElementById('videoLink').textContent = orderData.video;
+            showPage('confirmationPage');
+        }, 1500);
+    }, 1000);
+}
+
+// ============================================================
+// 📊 PAYMENT STATUS
+// ============================================================
+function showPaymentStatus(emoji, text, type) {
+    const status = document.getElementById('paymentStatus');
+    status.className = 'status-box show ' + type;
+    status.querySelector('.emoji').textContent = emoji;
+    document.getElementById('paymentStatusText').textContent = text;
+    clearTimeout(window.payStatusTimeout);
+    window.payStatusTimeout = setTimeout(() => status.classList.remove('show'), 5000);
+}
+
+// ============================================================
+// 📨 SEND TO TELEGRAM
+// ============================================================
+function sendToTelegram(data) {
+    // টোকেন এখন Cloudflare Worker-এ গোপনে থাকে, এখানে নেই
+    fetch(TELEGRAM_WORKER_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+    }).catch(e => console.error('Telegram error:', e));
+}
+
+// ============================================================
+// 📋 COPY NUMBER
+// ============================================================
+function copyBkashNumber() {
+    const num = document.getElementById('bkashNumber').textContent;
+    if (navigator.clipboard) {
+        navigator.clipboard.writeText(num)
+            .then(() => showPaymentStatus('📋', 'Number copied!', 'success'))
+            .catch(() => fallbackCopy(num));
+    } else {
+        fallbackCopy(num);
+    }
+}
+
+function fallbackCopy(text) {
+    const ta = document.createElement('textarea');
+    ta.value = text;
+    document.body.appendChild(ta);
+    ta.select();
+    try {
+        document.execCommand('copy');
+        showPaymentStatus('📋', 'Number copied!', 'success');
+    } catch {
+        showPaymentStatus('❌', 'Copy failed', 'error');
+    }
+    document.body.removeChild(ta);
+}
+
+// ============================================================
+// 🛠️ PRODUCT MANAGEMENT
+// ============================================================
+function saveProductsToFirebase() {
+    try {
+        localStorage.setItem('products', JSON.stringify(PRODUCTS));
+        console.log('✅ প্রোডাক্ট লোকালে সেভ হয়েছে');
+    } catch (e) {}
+
+    if (!isFirebaseReady) {
+        renderProductList();
+        renderProducts();
+        return;
+    }
+
+    database.ref('products').set(PRODUCTS)
+        .then(() => {
+            console.log('✅ প্রোডাক্ট Firebase এ আপডেট হয়েছে');
+            renderProductList();
+            renderProducts();
+        })
+        .catch(e => {
+            console.error('❌ Firebase save error:', e);
+            renderProductList();
+            renderProducts();
+        });
+}
+
+function loadProductsFromFirebase() {
+    try {
+        const local = JSON.parse(localStorage.getItem('products'));
+        if (local && local.length > 0) {
+            PRODUCTS = local;
+            console.log('📦 লোকাল থেকে প্রোডাক্ট লোড:', PRODUCTS.length);
+            renderProductList();
+            renderProducts();
+        }
+    } catch (e) {}
+
+    if (!isFirebaseReady) {
+        return;
+    }
+
+    database.ref('products').once('value')
+        .then(snapshot => {
+            const data = snapshot.val();
+            if (data && data.length > 0) {
+                PRODUCTS = data;
+                console.log('🔥 Firebase থেকে প্রোডাক্ট লোড:', PRODUCTS.length);
+                localStorage.setItem('products', JSON.stringify(PRODUCTS));
+            } else {
+                console.log('📭 Firebase খালি, লোকাল ডেটা ব্যবহার করা হচ্ছে');
+                if (PRODUCTS.length > 0) {
+                    database.ref('products').set(PRODUCTS)
+                        .then(() => console.log('✅ লোকাল ডেটা Firebase-এ ব্যাকআপ করা হয়েছে'));
+                }
+            }
+            renderProductList();
+            renderProducts();
+        })
+        .catch(e => {
+            console.error('❌ Firebase load error:', e);
+            renderProductList();
+            renderProducts();
+        });
+}
+
+function forceSyncProducts() {
+    if (!isFirebaseReady) {
+        alert('Firebase connected নয়!');
+        return;
+    }
+
+    if (!confirm('⚠️ Firebase থেকে প্রোডাক্ট রিলোড করতে চান? (লোকাল ডেটা ওভাররাইট হবে)')) return;
+
+    document.getElementById('loadingOverlay').classList.add('show');
+
+    database.ref('products').once('value')
+        .then(snapshot => {
+            const data = snapshot.val();
+            if (data && data.length > 0) {
+                PRODUCTS = data;
+                localStorage.setItem('products', JSON.stringify(PRODUCTS));
+                console.log('🔥 Firebase থেকে ফোর্স রিলোড:', PRODUCTS.length);
+            } else {
+                alert('📭 Firebase খালি!');
+            }
+            renderProductList();
+            renderProducts();
+            document.getElementById('loadingOverlay').classList.remove('show');
+            alert('✅ Products synced from Firebase!');
+        })
+        .catch(e => {
+            console.error('❌ Sync error:', e);
+            document.getElementById('loadingOverlay').classList.remove('show');
+            alert('❌ Sync failed!');
+        });
+}
+
+function renderProductList() {
+    const container = document.getElementById('productList');
+    if (!PRODUCTS || PRODUCTS.length === 0) {
+        container.innerHTML = '<div class="admin-empty-google">' + translations[currentLang].noProducts + '</div>';
+        return;
+    }
+
+    let html = '';
+    PRODUCTS.forEach((product, index) => {
+        const tagDisplay = product.tag && product.tag !== 'None' ? `<span class="tag-badge">🏷️ ${product.tag}</span>` : '';
+        html += `
+            <div class="product-list-item-google">
+                <div class="info">
+                    <div class="name">${product.icon || '📦'} ${product.name}</div>
+                    <div class="desc">${product.desc}</div>
+                    <div class="price">৳ ${product.price} ${product.originalPrice ? '<span style="text-decoration:line-through;color:var(--text-muted);font-weight:400;font-size:11px;margin-left:6px;">৳ '+product.originalPrice+'</span>' : ''}</div>
+                    ${tagDisplay}
+                </div>
+                <div class="actions">
+                    <button class="edit-btn" onclick="editProduct(${index})">✏️</button>
+                    <button class="delete-btn" onclick="deleteProduct(${index})">🗑️</button>
+                </div>
+            </div>
+        `;
+    });
+    container.innerHTML = html;
+}
+
+function addProduct() {
+    const name = document.getElementById('prodName').value.trim();
+    const price = parseInt(document.getElementById('prodPrice').value);
+    const desc = document.getElementById('prodDesc').value.trim();
+    const icon = document.getElementById('prodIcon').value.trim() || '📦';
+    const originalPrice = parseInt(document.getElementById('prodOriginal').value) || price;
+    const tag = document.getElementById('prodTag').value.trim();
+    const link = document.getElementById('prodLink').value.trim();
+    const video = document.getElementById('prodVideo').value.trim();
+
+    if (!name || !price || !desc || !link || !video) {
+        alert('Please fill all required fields');
+        return;
+    }
+
+    const discount = Math.round(((originalPrice - price) / originalPrice) * 100);
+
+    const newProduct = {
+        id: name.toLowerCase().replace(/\s+/g, '_') + '_' + Date.now(),
+        name, 
+        price, 
+        desc, 
+        icon, 
+        originalPrice, 
+        discount, 
+        tag: tag || '',
+        link, 
+        video,
+        featureTags: ['Lifetime']
+    };
+
+    PRODUCTS.push(newProduct);
+    saveProductsToFirebase();
+    clearProductForm();
+    alert('✅ Product added successfully!');
+}
+
+function editProduct(index) {
+    const p = PRODUCTS[index];
+    document.getElementById('prodName').value = p.name;
+    document.getElementById('prodPrice').value = p.price;
+    document.getElementById('prodDesc').value = p.desc;
+    document.getElementById('prodIcon').value = p.icon || '';
+    document.getElementById('prodOriginal').value = p.originalPrice || '';
+    document.getElementById('prodTag').value = p.tag || '';
+    document.getElementById('prodLink').value = p.link;
+    document.getElementById('prodVideo').value = p.video;
+    document.getElementById('editProductId').value = index;
+    
+    document.getElementById('addProductBtn').style.display = 'none';
+    document.getElementById('updateProductBtn').style.display = 'inline-block';
+    document.getElementById('cancelEditBtn').style.display = 'inline-block';
+}
+
+function updateProduct() {
+    const index = parseInt(document.getElementById('editProductId').value);
+    if (isNaN(index) || index < 0 || index >= PRODUCTS.length) {
+        alert('Product not found!');
+        return;
+    }
+
+    const name = document.getElementById('prodName').value.trim();
+    const price = parseInt(document.getElementById('prodPrice').value);
+    const desc = document.getElementById('prodDesc').value.trim();
+    const icon = document.getElementById('prodIcon').value.trim() || '📦';
+    const originalPrice = parseInt(document.getElementById('prodOriginal').value) || price;
+    const tag = document.getElementById('prodTag').value.trim();
+    const link = document.getElementById('prodLink').value.trim();
+    const video = document.getElementById('prodVideo').value.trim();
+
+    if (!name || !price || !desc || !link || !video) {
+        alert('Please fill all required fields');
+        return;
+    }
+
+    const discount = Math.round(((originalPrice - price) / originalPrice) * 100);
+
+    PRODUCTS[index] = { 
+        ...PRODUCTS[index], 
+        name, 
+        price, 
+        desc, 
+        icon, 
+        originalPrice, 
+        discount, 
+        tag: tag || '',
+        link, 
+        video 
+    };
+
+    saveProductsToFirebase();
+    clearProductForm();
+    alert('✅ Product updated successfully!');
+}
+
+function deleteProduct(index) {
+    if (!confirm(`Delete "${PRODUCTS[index].name}"?`)) return;
+    PRODUCTS.splice(index, 1);
+    saveProductsToFirebase();
+    alert('✅ Product deleted!');
+}
+
+function clearProductForm() {
+    document.getElementById('prodName').value = '';
+    document.getElementById('prodPrice').value = '';
+    document.getElementById('prodDesc').value = '';
+    document.getElementById('prodIcon').value = '';
+    document.getElementById('prodOriginal').value = '';
+    document.getElementById('prodTag').value = '';
+    document.getElementById('prodLink').value = '';
+    document.getElementById('prodVideo').value = '';
+    document.getElementById('editProductId').value = '';
+    
+    document.getElementById('addProductBtn').style.display = 'inline-block';
+    document.getElementById('updateProductBtn').style.display = 'none';
+    document.getElementById('cancelEditBtn').style.display = 'none';
+}
+
+function cancelEdit() { clearProductForm(); }
+
+// ============================================================
+// 🛠️ ADMIN FUNCTIONS
+// ============================================================
+function loadAdminData() {
+    if (!isAdminLoggedIn) return;
+    loadProductsFromFirebase();
+    loadOrders();
+}
+
+function loadOrders() {
+    const adminList = document.getElementById('adminList');
+    adminList.innerHTML = '<div class="loading-spinner-google">Loading...</div>';
+
+    if (!isFirebaseReady) {
+        try {
+            const local = JSON.parse(localStorage.getItem('orders') || '[]');
+            allTransactions = local;
+            renderAdminList(local);
+            updateAdminOrderCount();
+        } catch (e) {
+            adminList.innerHTML = '<div class="admin-empty-google">❌ Failed to load</div>';
+        }
+        return;
+    }
+
+    database.ref('transactions').orderByChild('timestamp').limitToLast(100).once('value')
+        .then(snapshot => {
+            const data = snapshot.val();
+            if (!data) {
+                adminList.innerHTML = '<div class="admin-empty-google">' + translations[currentLang].noOrders + '</div>';
+                document.getElementById('adminCount').textContent = '📊 Total: 0 orders';
+                allTransactions = [];
+                return;
+            }
+            const keys = Object.keys(data);
+            const entries = keys.map(key => ({ key, ...data[key] }));
+            allTransactions = entries.reverse();
+            updateAdminOrderCount();
+            renderAdminList(entries);
+        })
+        .catch(e => {
+            console.error('Admin load error:', e);
+            adminList.innerHTML = '<div class="admin-empty-google">❌ Failed to load</div>';
+        });
+}
+
+function renderAdminList(data) {
+    const adminList = document.getElementById('adminList');
+    const t = translations[currentLang];
+    
+    if (!data || data.length === 0) {
+        adminList.innerHTML = '<div class="admin-empty-google">' + t.noOrders + '</div>';
+        return;
+    }
+
+    let html = '';
+    data.forEach(item => {
+        html += `
+            <div class="admin-item-google">
+                <div class="top">
+                    <span>👤 ${item.name || 'N/A'}</span>
+                    <span>💰 ৳ ${item.amount || 0}</span>
+                </div>
+                <div class="detail">
+                    <span>📱 ${item.phone || 'N/A'}</span>
+                    <span>📧 ${item.email || 'N/A'}</span>
+                    <span>🔑 ${item.txnId || 'N/A'}</span>
+                </div>
+                <div class="time">${item.time || ''}</div>
+            </div>
+        `;
+    });
+    adminList.innerHTML = html;
+}
+
+function deleteAllOrders() {
+    if (!confirm('Delete all orders?')) return;
+
+    if (!isFirebaseReady) {
+        localStorage.removeItem('orders');
+        allTransactions = [];
+        renderAdminList([]);
+        updateAdminOrderCount();
+        return;
+    }
+
+    database.ref('transactions').remove()
+        .then(() => {
+            try { localStorage.removeItem('orders'); } catch (e) {}
+            allTransactions = [];
+            renderAdminList([]);
+            updateAdminOrderCount();
+            alert('✅ All orders deleted');
+        })
+        .catch(e => { console.error('Delete error:', e); alert('❌ Failed to delete'); });
+}
+
+function adminLogin() {
+    const pass = document.getElementById('adminPassword').value.trim();
+    if (pass === ADMIN_PASSWORD) {
+        isAdminLoggedIn = true;
+        document.getElementById('adminLoginArea').style.display = 'none';
+        document.getElementById('adminContent').style.display = 'block';
+        loadAdminData();
+        document.getElementById('adminPassword').value = '';
+    } else {
+        alert('❌ Wrong password');
+        document.getElementById('adminPassword').value = '';
+        document.getElementById('adminPassword').focus();
+    }
+}
+
+function adminLogout() {
+    isAdminLoggedIn = false;
+    document.getElementById('adminLoginArea').style.display = 'flex';
+    document.getElementById('adminContent').style.display = 'none';
+    document.getElementById('adminPassword').value = '';
+}
+
+function changeAdminPassword() {
+    const newPass = document.getElementById('adminNewPassword').value.trim();
+    if (!newPass || newPass.length < 4) {
+        alert('Password must be at least 4 characters');
+        return;
+    }
+    ADMIN_PASSWORD = newPass;
+    localStorage.setItem('adminPassword', newPass);
+    document.getElementById('adminNewPassword').value = '';
+    alert('✅ Password changed');
+}
+
+// ============================================================
+// 🎯 EVENT LISTENERS & INIT
+// ============================================================
+document.addEventListener('DOMContentLoaded', function() {
+    const goPaymentBtn = document.getElementById('goPaymentBtn');
+    const backToHome = document.getElementById('backToHome');
+    const confirmBtn = document.getElementById('confirmBtn');
+    const copyBkashBtn = document.getElementById('copyBkashBtn');
+    const newOrderBtn = document.getElementById('newOrderBtn');
+    const txnId = document.getElementById('txnId');
+    const userPhone = document.getElementById('userPhone');
+    const langToggle = document.getElementById('langToggle');
+    const darkModeToggle = document.getElementById('darkModeToggle');
+    const adminGearBtn = document.getElementById('adminGearBtn');
+    const adminTrigger = document.getElementById('adminTrigger');
+    const adminForceSync = document.getElementById('adminForceSync');
+    const popupClose = document.getElementById('popupClose');
+    const popupBuyBtn = document.getElementById('popupBuyBtn');
+
+    // Popup close
+    popupClose.addEventListener('click', function() {
+        document.getElementById('productDetailPopup').classList.remove('show');
+    });
+
+    document.getElementById('productDetailPopup').addEventListener('click', function(e) {
+        if (e.target === this) this.classList.remove('show');
+    });
+
+    // Popup Buy button
+    popupBuyBtn.addEventListener('click', function() {
+        document.getElementById('productDetailPopup').classList.remove('show');
+    });
+
+    const savedAdminPass = localStorage.getItem('adminPassword');
+    if (savedAdminPass) ADMIN_PASSWORD = savedAdminPass;
+
+    loadDarkMode();
+
+    if (isFirebaseReady) {
+        database.ref('transactions').once('value')
+            .then(snapshot => {
+                const data = snapshot.val();
+                if (data) {
+                    const keys = Object.keys(data);
+                    allTransactions = keys.map(key => ({ key, ...data[key] }));
+                }
+            })
+            .catch(() => {});
+    } else {
+        try {
+            const local = JSON.parse(localStorage.getItem('orders') || '[]');
+            allTransactions = local;
+        } catch (e) {}
+    }
+
+    loadProductsFromFirebase();
+    setLanguage('en');
+
+    darkModeToggle.addEventListener('click', toggleDarkMode);
+
+    langToggle.addEventListener('click', function() {
+        const newLang = currentLang === 'bn' ? 'en' : 'bn';
+        setLanguage(newLang);
+    });
+
+    adminGearBtn.addEventListener('click', function() {
+        document.getElementById('adminPanel').classList.add('show');
+        if (!isAdminLoggedIn) {
+            document.getElementById('adminLoginArea').style.display = 'flex';
+            document.getElementById('adminContent').style.display = 'none';
+            document.getElementById('adminPassword').value = '';
+            document.getElementById('adminPassword').focus();
+        } else {
+            document.getElementById('adminLoginArea').style.display = 'none';
+            document.getElementById('adminContent').style.display = 'block';
+            loadAdminData();
+        }
+    });
+
+    adminTrigger.addEventListener('dblclick', function(e) {
+        e.preventDefault();
+        document.getElementById('adminPanel').classList.add('show');
+        if (!isAdminLoggedIn) {
+            document.getElementById('adminLoginArea').style.display = 'flex';
+            document.getElementById('adminContent').style.display = 'none';
+            document.getElementById('adminPassword').value = '';
+            document.getElementById('adminPassword').focus();
+        } else {
+            document.getElementById('adminLoginArea').style.display = 'none';
+            document.getElementById('adminContent').style.display = 'block';
+            loadAdminData();
+        }
+    });
+
+    document.getElementById('adminClose').addEventListener('click', function() {
+        document.getElementById('adminPanel').classList.remove('show');
+    });
+
+    document.getElementById('adminPanel').addEventListener('click', function(e) {
+        if (e.target === this) this.classList.remove('show');
+    });
+
+    document.getElementById('adminLoginBtn').addEventListener('click', adminLogin);
+    document.getElementById('adminPassword').addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') { e.preventDefault(); adminLogin(); }
+    });
+
+    document.getElementById('adminDeleteAll').addEventListener('click', deleteAllOrders);
+    document.getElementById('adminRefresh').addEventListener('click', loadAdminData);
+    document.getElementById('adminLogout').addEventListener('click', adminLogout);
+    document.getElementById('adminChangePassBtn').addEventListener('click', changeAdminPassword);
+    document.getElementById('adminForceSync').addEventListener('click', forceSyncProducts);
+    document.getElementById('adminNewPassword').addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') { e.preventDefault(); changeAdminPassword(); }
+    });
+
+    goPaymentBtn.addEventListener('click', goToPayment);
+    backToHome.addEventListener('click', () => showPage('homePage'));
+    confirmBtn.addEventListener('click', confirmPayment);
+    copyBkashBtn.addEventListener('click', copyBkashNumber);
+
+    newOrderBtn.addEventListener('click', function() {
+        document.querySelectorAll('.product-item').forEach(el => el.classList.remove('selected'));
+        selectedProduct = null;
+        document.getElementById('displayPrice').textContent = '৳ 0';
+        document.getElementById('savedText').style.display = 'none';
+        goPaymentBtn.disabled = true;
+        document.getElementById('userName').value = '';
+        document.getElementById('userPhone').value = '';
+        document.getElementById('userEmail').value = '';
+        showPage('homePage');
+    });
+
+    // TXN: no forced transformation, user types freely (max 10 chars enforced by maxlength attribute)
+
+    txnId.addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') { e.preventDefault(); confirmPayment(); }
+    });
+
+    userPhone.addEventListener('input', function() {
+        this.value = this.value.replace(/[^0-9]/g, '').slice(0, 11);
+    });
+
+    document.getElementById('addProductBtn').addEventListener('click', addProduct);
+    document.getElementById('updateProductBtn').addEventListener('click', updateProduct);
+    document.getElementById('cancelEditBtn').addEventListener('click', cancelEdit);
+
+    document.querySelectorAll('#prodName, #prodPrice, #prodDesc, #prodIcon, #prodOriginal, #prodTag, #prodLink, #prodVideo')
+        .forEach(input => {
+            input.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    const editId = document.getElementById('editProductId').value;
+                    if (editId) updateProduct();
+                    else addProduct();
+                }
+            });
+        });
+
+    setInterval(updateOrderCounter, 30000);
+
+    console.log('✅ Bazigar Store ready!');
+    console.log('🔐 Admin password:', ADMIN_PASSWORD);
+    console.log('🌙 Click moon icon for dark mode');
+    console.log('⚙️ Click gear icon or double-click logo for admin panel');
+    console.log('📦 Default language: En');
+});
+</script>
+</body>
+</html>
